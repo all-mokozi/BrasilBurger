@@ -2,7 +2,7 @@ package brasil.dto;
 
 import brasil.enumeration.ProdEnum;
 
-public class ComplementDTO {
+public class  ProduitDTO {
 
     
 
@@ -14,7 +14,7 @@ public class ComplementDTO {
     private String description;
     private boolean isArchive;
 
-    public ComplementDTO() {
+    public ProduitDTO() {
     }
 
     public String getNom() {

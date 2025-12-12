@@ -1,7 +1,12 @@
 package brasil.repository;
 
-import brasil.entity.Burger;
+import java.util.List;
+
+import brasil.entity.Produit;
 
 public interface IProduitRepository {
-    public void  insert( Burger b);
+    public void  insert( Produit b);
+   Double findPriceById(int idProduit);
+   List<Produit> findComposantsDisponibles();
+   
 }

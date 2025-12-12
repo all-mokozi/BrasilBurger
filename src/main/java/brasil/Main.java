@@ -3,22 +3,26 @@ package brasil;
 import java.sql.Connection;
 
 import brasil.config.DataBaseSingleton;
-import brasil.dto.BurgerDTO;
+import brasil.dto.MenuDTO;
+import brasil.dto.ProduitDTO;
+import brasil.entity.Produit;
+import brasil.enumeration.ProdEnum;
+import brasil.repository.IMenuComposantRepository;
 import brasil.repository.IProduitRepository;
-import brasil.repository.impl.BurgerRepositoryimpl;
-
-import brasil.service.BurgerService;
-
-import brasil.view.BurgeRView;
+import brasil.repository.impl.MenuComposantRepositoryImpl;
+import brasil.repository.impl.ProduitRepositoryimpl;
+import brasil.service.ProduitService;
+import brasil.view.ProduitView;
 
 import java.util.InputMismatchException;
+import java.util.List;
 
 public class Main {
     
-    private static final BurgeRView view = new BurgeRView();
+    private static final ProduitView view = new ProduitView();
 
     public static int afficherMenu() {
-        System.out.println("\n--- 🍔 Menu Principal ---");
+        System.out.println("\n--- Menu Principal ---");
         System.out.println("1. Ajouter un produit");
         System.out.println("2. Afficher les produits");
         System.out.println("3. Modifier un produit");
@@ -41,8 +45,11 @@ public class Main {
         try {
             // Initialiser la connexion au début de l'application
             conn = DataBaseSingleton.getInstance().getConnection();
-            IProduitRepository repo = new BurgerRepositoryimpl(conn); 
-            BurgerService service = new BurgerService(repo);
+            IProduitRepository repo = new ProduitRepositoryimpl(conn); 
+            IMenuComposantRepository menuComposantRepo = new MenuComposantRepositoryImpl(conn); // À implémenter si nécessaire
+            ProduitService service = new ProduitService(repo, menuComposantRepo);
+
+
 
             int choix = 0;
             boolean running = true;
@@ -53,8 +60,21 @@ public class Main {
 
                 switch (choix) {
                     case 1:
+                        // 1. Saisir les données de base (Produit ou MenuDTO)
+                        ProduitDTO dto = view.saisirProduit();
                         
-                        BurgerDTO dto = view.saisirProduit();
+                        // 2. LOGIQUE SPÉCIFIQUE AU MENU
+                        if (dto.getCategorie() == ProdEnum.MENU) {
+                            
+                            // A. Récupérer la liste des composants disponibles (Burger, Complément)
+                            List<Produit> composants = service.getComposantsDisponibles();
+                            
+                            // B. Appeler la méthode de la View avec les deux arguments
+                            // Note: Le downcast (MenuDTO) dto est nécessaire car dto est de type ProduitDTO
+                            view.saisirComposants((MenuDTO) dto, composants);
+                        }
+                        
+                        // 3. Traiter le produit (Menu ou Produit simple)
                         service.ajouterProduit(dto);
                         break;
                     case 2:
@@ -78,7 +98,6 @@ public class Main {
         } finally {
             
             DataBaseSingleton.getInstance().closeConnection();
-            view.close();
         }
     }
 }

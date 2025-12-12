@@ -9,6 +9,9 @@ public  class Produit {
     private String image;
     private String description;
     private boolean isArchive;
+    public Produit() {
+    }
+
     public boolean isArchive() {
         return isArchive;
     }
