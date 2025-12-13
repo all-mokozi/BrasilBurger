@@ -11,10 +11,10 @@ import brasil.entity.Produit;
 import brasil.enumeration.ProdEnum;
 
 public class ProduitView {
-    private final Scanner scanner = new Scanner(System.in);
+    private  final Scanner scanner = new Scanner(System.in);
 
 
-public int readInt() { // Version SANS argument String prompt
+public int readInt() { 
     int value = 0;
     while (true) {
         System.out.print("Votre choix : ");
@@ -24,10 +24,10 @@ public int readInt() { // Version SANS argument String prompt
                
                 break; 
             } else {
-                System.out.println("⚠️ Saisie invalide. Veuillez entrer un nombre entier.");
+                System.out.println(" Saisie invalide. Veuillez entrer un nombre entier.");
             }
         } catch (InputMismatchException e) {
-            System.out.println("⚠️ Saisie invalide. Veuillez entrer un nombre entier.");
+            System.out.println(" Saisie invalide. Veuillez entrer un nombre entier.");
         } finally {
             scanner.nextLine(); 
         }
@@ -97,7 +97,7 @@ public void saisirComposants(MenuDTO menuDto, List<Produit> composantsDisponible
     System.out.println("\n--- Saisie des Composants du Menu ---");
 
     if (composantsDisponibles.isEmpty()) {
-        System.out.println("⚠️ AUCUN COMPOSANT DISPONIBLE. Veuillez d'abord ajouter des Burgers ou Compléments.");
+        System.out.println("AUCUN COMPOSANT DISPONIBLE. Veuillez d'abord ajouter des Burgers ou Compléments.");
         return;
     }
 
@@ -141,14 +141,12 @@ public void saisirComposants(MenuDTO menuDto, List<Produit> composantsDisponible
     } while (reponse.equalsIgnoreCase("o"));
 }
 
-    
-    // --- METHODES DE SAISIE MANQUANTES ---
 
-    private String readString(String prompt) {
+    public  String readString(String prompt) {
         String input;
         do {
             System.out.print(prompt + " : ");
-            input = scanner.nextLine().trim();
+            input =  scanner.nextLine().trim();
             if (input.isEmpty()) {
                 System.out.println("⚠️ La saisie ne peut pas être vide. Veuillez réessayer.");
             }
