@@ -32,13 +32,14 @@ public class Main {
         System.out.println("\n--- Menu Principal ---");
         System.out.println("1. Ajouter un produit");
         System.out.println("2. Ajouter une zone");
-        System.out.println("3. Modifier un produit");
-        System.out.println("4. Quitter");
+        System.out.println("3. Afficher tous les produits");
+        System.out.println("4.Afficher  les produits par categorie");
+        System.out.println("5.Quitter");
 
         int choix = 0;
         try {
 
-            System.out.print("Choisissez une option (1-4): ");
+            System.out.print("Choisissez une option (1-5): ");
             choix = view.readInt(); 
         } catch (InputMismatchException e) {
             System.out.println("Saisie invalide. Veuillez entrer un nombre.");
@@ -55,7 +56,7 @@ public class Main {
             IMenuComposantRepository menuComposantRepo = new MenuComposantRepositoryImpl(conn);
             ImageService imageService = new ImageService();
             ProduitService service = new ProduitService(repo, menuComposantRepo, imageService);
-            IZoneRepository zoneRepo = new ZoneRepositoryimpl(conn); // TODO: Initialiser le repository de Zone
+            IZoneRepository zoneRepo = new ZoneRepositoryimpl(conn); 
                 ZoneService zoneService = new ZoneService(zoneRepo);
 
 
@@ -84,14 +85,21 @@ public class Main {
 
                         break;
                     case 3:
-                        System.out.println("Fonctionnalité 'Modifier' non implémentée.");
+                        
+                        service.afficherProduits();
                         break;
                     case 4:
 
-                        System.out.println("Application fermée. Au revoir !");
+                       ProdEnum cat =view.retourCat();
+                        service.afficherPrduitsBycategorie(cat);
+                        break;
+                    case 5:
+
+                      System.out.println("Merci et a la prochaine");
+                       running = false;
                         break;
                     default:
-                        System.out.println(" Veuillez choisir entre 1 et 4.");
+                        System.out.println(" Veuillez choisir entre 1 et 5");
                 }
             }
 

@@ -58,6 +58,36 @@ public class ProduitRepositoryimpl implements IProduitRepository {
         }
     }
 
+@Override
+public List<Produit> selectAll() {
+    String sql = "SELECT*  FROM produit ";
+    
+    try (PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (ResultSet rs = ps.executeQuery()) {
+            List<Produit> produits = new ArrayList<>();
+            while (rs.next()) {
+                Produit p = new Produit();
+                p.setId(rs.getInt("id"));
+                p.setNom(rs.getString("nom"));
+                p.setPrix(rs.getDouble("prix"));
+                p.setImage(rs.getString("image"));
+                p.setDescription(rs.getString("description"));
+                p.setCategorie(ProdEnum.valueOf(rs.getString("type_produit")));
+                p.setArchive(rs.getBoolean("is_archived"));
+                produits.add(p);
+            }
+            return produits;
+        }
+    } catch (SQLException e) {
+        System.err.println("Erreur SQL lors de la récupération des produits: " + e.getMessage());
+        throw new RuntimeException("Impossible de charger les produits.", e);
+    }
+
+               
+              
+    
+}
+
 
     @Override
     public Double findPriceById(int idProduit) {

@@ -46,7 +46,7 @@ public class ZoneRepositoryimpl implements IZoneRepository{
         } catch (SQLException e) {
 
             System.err.println("Erreur SQL lors de l'insertion du Zone.");
-                e.printStackTrace(); // Ajouté pour voir le détail
+                e.printStackTrace(); 
 
             throw new RuntimeException("Impossible d'insérer le Zone dans la base de données.", e);
         }

@@ -8,5 +8,6 @@ public interface IProduitRepository {
     public void  insert( Produit b);
    Double findPriceById(int idProduit);
    List<Produit> findComposantsDisponibles();
+   public List<Produit> selectAll();
    
 }

@@ -32,6 +32,25 @@ public class ProduitService {
         this.imageService = imageService;
 
     }
+    public void afficherProduits() {
+        List<Produit> produits = produitRepository.selectAll();
+         int i=1;
+        for (Produit p : produits) {
+           
+            System.out.println(i + ". " + p);
+            i=i+1;
+        }
+    }
+    public void afficherPrduitsBycategorie(ProdEnum categorie) {
+        List<Produit> produits = produitRepository.selectAll();
+         int i=1;
+        for (Produit p : produits) {
+           if(p.getCategorie()==categorie) {
+            System.out.println(i + ". " + p);
+            i=i+1;
+           }
+        }
+    }
 
     public void ajouterProduit(ProduitDTO p) {
          File imageFile = new File(p.getImage()); // chemin local
