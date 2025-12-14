@@ -4,8 +4,8 @@ import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
-import brasil.dto.ComposantDTO; // NOUVEL IMPORT
-import brasil.dto.MenuDTO; // NOUVEL IMPORT
+import brasil.dto.ComposantDTO;
+import brasil.dto.MenuDTO;
 import brasil.dto.ProduitDTO;
 import brasil.entity.Produit;
 import brasil.enumeration.ProdEnum;
@@ -16,7 +16,7 @@ public class ProduitView {
     public int readInt() {
         int value = 0;
         while (true) {
-            System.out.print("Votre choix : ");
+            
             try {
                 if (scanner.hasNextInt()) {
                     value = scanner.nextInt();
@@ -48,11 +48,11 @@ public class ProduitView {
         try {
             choix = scanner.nextInt();
         } catch (InputMismatchException e) {
-            choix = 0; // valeur invalide
+            choix = 0; 
         }
-        scanner.nextLine(); // vider le buffer
+        scanner.nextLine(); 
 
-    } while (choix < 1 || choix > 4); // ✅ accepte 1 à 4
+    } while (choix < 1 || choix > 4);  
 
     return choix;
 }
@@ -76,6 +76,7 @@ public class ProduitView {
             break;
         
             default:
+                System.out.println("Choisissez une catégorie (1-4)");
                 break;
         }
         return cat;
@@ -84,45 +85,54 @@ public class ProduitView {
     }
 
     public ProduitDTO saisirProduit() {
-        System.out.println("\n---  Saisie des informations Communes du Produit ---");
+    System.out.println("\n--- Saisie des informations Communes du Produit ---");
 
-        ProduitDTO dto;
+    ProduitDTO dto = null;
+    int choixCat = -1; 
+    do {
+        choixCat = choix(); 
 
-        String nom = readString("Nom du produit");
-
-        ProdEnum categorie = null;
-        int choix = choix();
-
-        if (choix == 2) {
-            MenuDTO menuDto = new MenuDTO();
-            menuDto.setNom(nom);
-
-            menuDto.setCategorie(ProdEnum.MENU);
-
-            dto = menuDto;
-        } else {
-            double prix = readPositiveDouble("Prix du produit (doit être > 0)");
-            dto = new ProduitDTO();
-            dto.setNom(nom);
-            dto.setPrix(prix);
-
-            switch (choix) {
-                case 1:
-                    categorie = ProdEnum.BURGER;
-                    break;
-                case 3:
-                    categorie = ProdEnum.COMPLEMENT;
-                    break;
-            }
-            dto.setCategorie(categorie);
+        if (choixCat == 4) {
+            System.out.println("Saisie du produit annulée.");
+            return null; 
         }
+    } while (choixCat < 1 || choixCat > 3);
 
+    String nom = readString("Nom du produit");
+
+    if (choixCat == 2) {
+        MenuDTO menuDto = new MenuDTO();
+        menuDto.setNom(nom);
+        menuDto.setCategorie(ProdEnum.MENU);
+        dto = menuDto;
+    } else {
+        double prix = readPositiveDouble("Prix du produit (doit être > 0)");
+        dto = new ProduitDTO();
+        dto.setNom(nom);
+        dto.setPrix(prix);
+
+        switch (choixCat) {
+            case 1:
+                dto.setCategorie(ProdEnum.BURGER);
+                break;
+            case 3:
+                dto.setCategorie(ProdEnum.COMPLEMENT);
+                break;
+        }
+    }
+    
+    // Propriétés communes
+    if (dto != null) {
         dto.setImage(readString("Image du produit (URL ou chemin)"));
         dto.setDescription(readString("Description du produit"));
         dto.setArchive(false);
-
-        return dto;
     }
+    
+    
+    return dto; 
+}
+
+  
 
     public void saisirComposants(MenuDTO menuDto, List<Produit> composantsDisponibles) {
         System.out.println("\n--- Saisie des Composants du Menu ---");
@@ -176,7 +186,7 @@ public class ProduitView {
             System.out.print(prompt + " : ");
             input = scanner.nextLine().trim();
             if (input.isEmpty()) {
-                System.out.println("⚠️ La saisie ne peut pas être vide. Veuillez réessayer.");
+                System.out.println(" La saisie ne peut pas être vide. Veuillez réessayer.");
             }
         } while (input.isEmpty());
         return input;

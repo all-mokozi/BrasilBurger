@@ -7,6 +7,8 @@ public class Zone {
     private double prixLivraison;
     private int id;   
     private ArrayList<Quartier> quartiers;
+    public Zone() {
+    }
     public Zone(String nom, double prixLivraison) {
         this.nom = nom;
         this.prixLivraison = prixLivraison;
@@ -35,5 +37,11 @@ public class Zone {
     public void addQuartier(Quartier quartier) {
         this.quartiers.add(quartier);
     }
+    @Override
+    public String toString() {
+        return "Zone [nom=" + nom + ", prixLivraison=" + prixLivraison + ", id=" + id + "]";
+    }
+   
+    
     
 }

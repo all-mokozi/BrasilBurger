@@ -67,9 +67,14 @@ public class ProduitService {
         }
 
         Produit produit = ProduitFactory.createProduit(p);
-        produitRepository.insert(produit);
+        
+            produitRepository.insert(produit);
 
         System.out.println("Produit (" + produit.getCategorie() + ") " + produit.getNom() + " ajouté avec succès.");
+
+       
+    
+        
     }
 
     private void ajouterMenu(MenuDTO dto) {
