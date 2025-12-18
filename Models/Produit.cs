@@ -35,8 +35,12 @@ namespace Models
         [Column("is_archived")]
         public bool IsArchived { get; set; } = false;
 
-        // Navigation vers MenuComposant si besoin
-        public List<MenuComposant>? MenuComposantsAsMenu { get; set; }
-        public List<MenuComposant>? MenuComposantsAsProduit { get; set; }
+          public ICollection<MenuComposant> ComposantsDuMenu { get; set; }
+            = new List<MenuComposant>();
+
+        
+        public ICollection<MenuComposant> UtiliseDansMenus { get; set; }
+            = new List<MenuComposant>();
     }
-}
+    }
+

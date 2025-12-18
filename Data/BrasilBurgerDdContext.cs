@@ -13,6 +13,31 @@ namespace Data
         public DbSet<Paiement> Paiements { get; set; }
         public DbSet<Produit> Produits{ get; set; }
         public DbSet<MenuComposant> MenuComposants { get; set; }
+
+protected override void OnModelCreating(ModelBuilder modelBuilder)
+{
+    modelBuilder.Entity<MenuComposant>()
+        .HasOne(mc => mc.Menu)
+        .WithMany(p => p.ComposantsDuMenu)
+        .HasForeignKey(mc => mc.MenuId)
+        .OnDelete(DeleteBehavior.Restrict);
+
+    modelBuilder.Entity<MenuComposant>()
+        .HasOne(mc => mc.ProduitComposant)
+        .WithMany(p => p.UtiliseDansMenus)
+        .HasForeignKey(mc => mc.ProduitComposantId)
+        .OnDelete(DeleteBehavior.Restrict);
+
+    modelBuilder.Entity<Produit>()
+        .Property(p => p.TypeProduit)
+        .HasConversion<string>();
+
+
+
+    base.OnModelCreating(modelBuilder);
+}
+
+
     
     }
 

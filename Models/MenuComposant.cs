@@ -6,19 +6,25 @@ namespace Models
     [Table("menu_composant")]
     public class MenuComposant
     {
-        [Column("id_menu")]
-        public int IdMenu { get; set; }
+        [Key]
+        [Column("id")]
+        public int Id { get; set; }
 
+        // 🔑 FK vers le menu
+        [Column("id_menu")]
+        public int MenuId { get; set; }
+
+        // 🔑 FK vers le produit composant
         [Column("id_produit_composant")]
-        public int IdProduitComposant { get; set; }
+        public int ProduitComposantId { get; set; }
 
         [Required]
         [Column("quantite")]
-        [Range(1, int.MaxValue, ErrorMessage = "La quantité doit être supérieure à 0")]
+        [Range(1, int.MaxValue)]
         public int Quantite { get; set; }
 
+        // 🔗 Navigations
         public Produit Menu { get; set; } = null!;
-
         public Produit ProduitComposant { get; set; } = null!;
     }
 }
