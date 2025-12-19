@@ -13,7 +13,9 @@ namespace Impl
         }
         public IEnumerable<Produit> selectAllProduit()
         {
-            return _context.Produits.ToList();
+            return _context.Produits
+                .OrderByDescending(p=>p.Id )
+                .ToList();;
 
         }
         public IEnumerable<Produit> selectByType(string type)
@@ -25,7 +27,14 @@ namespace Impl
 
             return _context.Produits
                 .Where(p => p.TypeProduit == typeProduit)
+                .OrderByDescending(p=>p.Id )
                 .ToList();
+        }
+        public Produit selectById(int id)
+
+        {
+            return _context.Produits.Find(id);
+            
         }
        
 

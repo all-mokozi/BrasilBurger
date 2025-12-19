@@ -9,8 +9,32 @@
       "PackagePath": "staticwebassets\\css\\site.css"
     },
     {
+      "Id": "C:\\Users\\mohma\\Desktop\\csharpC\\BrasilBurger\\wwwroot\\css\\style.css",
+      "PackagePath": "staticwebassets\\css\\style.css"
+    },
+    {
       "Id": "C:\\Users\\mohma\\Desktop\\csharpC\\BrasilBurger\\wwwroot\\favicon.ico",
       "PackagePath": "staticwebassets\\favicon.ico"
+    },
+    {
+      "Id": "C:\\Users\\mohma\\Desktop\\csharpC\\BrasilBurger\\wwwroot\\img\\Gemini_Generated_Image_1w3czw1w3czw1w3c.png",
+      "PackagePath": "staticwebassets\\img\\Gemini_Generated_Image_1w3czw1w3czw1w3c.png"
+    },
+    {
+      "Id": "C:\\Users\\mohma\\Desktop\\csharpC\\BrasilBurger\\wwwroot\\img\\WAVE-recrute-pour-ce-poste-12-Decembre-2024.png",
+      "PackagePath": "staticwebassets\\img\\WAVE-recrute-pour-ce-poste-12-Decembre-2024.png"
+    },
+    {
+      "Id": "C:\\Users\\mohma\\Desktop\\csharpC\\BrasilBurger\\wwwroot\\img\\hamburger-junk-food-white-icon-png-image-701751694972500plxqkzef6f-removebg-preview.png",
+      "PackagePath": "staticwebassets\\img\\hamburger-junk-food-white-icon-png-image-701751694972500plxqkzef6f-removebg-preview.png"
+    },
+    {
+      "Id": "C:\\Users\\mohma\\Desktop\\csharpC\\BrasilBurger\\wwwroot\\img\\style.css",
+      "PackagePath": "staticwebassets\\img\\style.css"
+    },
+    {
+      "Id": "C:\\Users\\mohma\\Desktop\\csharpC\\BrasilBurger\\wwwroot\\img\\unnamed.png",
+      "PackagePath": "staticwebassets\\img\\unnamed.png"
     },
     {
       "Id": "C:\\Users\\mohma\\Desktop\\csharpC\\BrasilBurger\\wwwroot\\js\\site.js",

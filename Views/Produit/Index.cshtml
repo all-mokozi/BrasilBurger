@@ -31,7 +31,7 @@
 
         .navbar-brasil {
             background-color: var(--brasil-green);
-            padding: 15px 0;
+            padding: 8px 0;
         }
 
         .navbar-brand {
@@ -81,6 +81,17 @@
             font-weight: 600;
         }
 
+        .voir {
+            background-color: var(--brasil-green);
+            color: white;
+            border: 2px solid #2ea155;
+            padding: 10px 30px;
+            font-weight: 300;
+            font-size: 12px;
+            text-decoration: none;
+            width: 100px;
+        }
+
         .card-product {
             border: none;
             border-radius: 12px;
@@ -115,6 +126,30 @@
             border-radius: 50%;
             border: 2px solid white;
         }
+        .logo {
+    width: 196px;        /* taille desktop */
+    max-width: 100%;     /* responsive */
+    height: 53px;        /* garde les proportions */
+    /* border-radius: 12px; */
+}
+.logo {
+    
+    color: white;
+    padding: 8px 15px;
+    border-bottom-left-radius: 8px;
+    border-top-right-radius: 8px;
+    box-shadow: 0 4px 6px rgba(6, 96, 33, 0.4);
+    font-weight: bold;
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    text-align: center;
+    align-items: center;
+}
+.logo img {
+    width: 33px;
+    /* border-radius: 10px; */
+}
     </style>
 </head>
 
@@ -122,9 +157,14 @@
 
     <nav class="navbar navbar-expand-lg navbar-brasil sticky-top">
         <div class="container">
-            <a class="navbar-brand" href="#">
-                <i class="fas fa-hamburger me-2"></i>Brasil<span style="color: var(--brasil-yellow);">Burger</span>
-            </a>
+            <div class="logo">
+                <img
+                    src="~/img/hamburger-junk-food-white-icon-png-image-701751694972500plxqkzef6f-removebg-preview.png">
+                <div class="nom">
+                    <span style="color:#0c0c0c;">Brasil</span>
+                    <span style="color:#FFC30F;">Burger</span>
+                </div>
+            </div>
             <div class="search-container mx-auto d-none d-md-block">
                 <input type="text" class="form-control search-input" placeholder="Rechercher...">
             </div>
@@ -143,21 +183,17 @@
     </header>
 
     <div class="container my-5 text-center">
-       <div class="d-flex justify-content-center gap-3">
-    <a asp-action="Index" class="btn btn-category">Tout</a>
+        <div class="d-flex justify-content-center gap-3">
+            <a asp-action="Index" class="btn btn-category">Tout</a>
 
-    <a asp-action="FiltrerByType"
-       asp-route-type="BURGER"
-       class="btn btn-category">
-        Burgers
-    </a>
+            <a asp-action="FiltrerByType" asp-route-type="BURGER" class="btn btn-category">
+                Burgers
+            </a>
 
-    <a asp-action="FiltrerByType"
-       asp-route-type="MENU"
-       class="btn btn-category">
-        Menus
-    </a>
-</div>
+            <a asp-action="FiltrerByType" asp-route-type="MENU" class="btn btn-category">
+                Menus
+            </a>
+        </div>
     </div>
 
     <div class="container mb-5">
@@ -177,7 +213,15 @@
                             <div class="card-body">
                                 <p class="text-muted small mb-1">@produit.TypeProduit</p>
                                 <h6 class="fw-bold">@produit.Nom</h6>
+
+
                                 <h5 class="text-dark">@produit.Prix FCFA</h5>
+
+                                <a asp-controller="Produit" asp-action="Details" asp-route-id="@produit.Id"
+                                    class="btn btn-outline-success btn-sm mt-3  w-50">
+                                    Voir Détails
+                                </a>
+
                             </div>
                         </div>
                     </div>

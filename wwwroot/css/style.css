@@ -1,0 +1,334 @@
+@import url('https://fonts.googleapis.com/css2?family=Itim&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    
+}
+
+body {
+    background: #f4f4f4;
+    padding: 30px;
+     font-family: 'Itim', cursive;
+    font-weight: 100;
+   
+}
+.Moyen img{
+    width: 38px;
+    border-radius: 4px;
+    height: 38px;
+
+}
+
+.modal {
+    background: white;
+    max-width: 900px;
+    margin: auto;
+    border-radius: 10px;
+    padding: 20px 30px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+.gauche {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(12px, 2vw, 24px);
+}
+.logo {
+    width: 196px;        /* taille desktop */
+    max-width: 100%;     /* responsive */
+    height: 53px;        /* garde les proportions */
+    /* border-radius: 12px; */
+}
+
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+/* .nom{
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    align-items: center;
+    gap: 20px;
+} */
+.Moyen{
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    align-items: center;
+    gap: 20px;
+}
+
+.logo {
+    background: #0a7d2c;
+    color: white;
+    padding: 8px 15px;
+    border-bottom-left-radius: 8px;
+    border-top-right-radius: 8px;
+    box-shadow: 0 4px 6px rgba(6, 96, 33, 0.4);
+    font-weight: bold;
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    text-align: center;
+    align-items: center;
+}
+
+.close {
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+h1 {
+    text-align: center;
+    margin: 20px 0;
+}
+
+.content {
+    display: flex;
+    gap: 40px;
+    margin-top: 50px;
+}
+
+.image-box img {
+    width: 260px;        /* taille desktop */
+    max-width: 100%;     /* responsive */
+    height: auto;        /* garde les proportions */
+    border-radius: 12px;
+    
+}
+.logo img {
+    width: 33px;
+    /* border-radius: 10px; */
+}
+
+.details p {
+    margin-bottom: 15px;
+
+}
+.details{
+    display: flex;
+    justify-content: space-between;
+    gap: 50px;
+}
+
+.quantite {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.quantite button {
+    width: 15px;
+    height: 15px;
+    border: none;
+    
+    border-radius: 50%;
+    cursor: pointer;
+    color: #f4f4f4;
+   
+}
+ .left {
+ 
+    background: #E94646;
+    
+}
+ .right {
+ 
+    background: #4FE734;
+    
+}
+
+.qte {
+    font-weight: bold;
+}
+
+.mode {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 15px;
+}
+
+.complement {
+    width: 100%;
+    padding: 8px;
+    margin-top: 20px;
+    background-color: #07622C;
+    color: #ededed;
+    font-weight: bold;
+    border-radius: 5px;
+}
+
+.paiement {
+    display: flex;
+    gap: 20px;
+   
+}
+
+.footer {
+    text-align: center;
+    margin-top: 30px;
+    gap: 50px;
+}
+
+.btn-commande {
+    background: #0a7d2c;
+    color: white;
+    border: none;
+    padding: 12px 30px;
+    font-size: 20px;
+     font-family: 'Itim', cursive;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-bottom: 50px;
+    text-decoration: none;
+}
+
+.btn-commande:hover {
+    background: #066021;
+}
+
+
+
+@media (max-width: 768px) {
+
+    body {
+        padding: 15px;
+    }
+
+    .modal {
+        padding: 20px;
+    }
+
+    .content {
+        flex-direction: column;
+        align-items: center;
+        gap: 30px;
+        margin-top: 30px;
+    }
+
+    .image-box img {
+        width: 100%;
+        max-width: 300px;
+    }
+
+    .details {
+        flex-direction: column;
+        gap: 20px;
+        width: 100%;
+    }
+
+    .gauche {
+        width: 100%;
+        text-align: left;
+    }
+
+    .footer {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .btn-commande {
+        width: 100%;
+        margin-bottom: 0;
+    }
+}
+/* ===============================
+   OVERLAY + MODAL DETAILS
+   =============================== */
+
+.overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.55);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-details {
+    width: 90%;
+    max-width: 1000px;
+    padding: 30px 40px;
+}
+
+/* TITRE */
+.title {
+    text-align: center;
+    font-size: 28px;
+    margin: 30px 0 40px;
+}
+
+/* LAYOUT 2 COLONNES */
+.details-layout {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 60px;
+    align-items: center;
+}
+
+/* IMAGE */
+.image-box.shadow img {
+    width: 100%;
+    border-radius: 16px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+}
+
+/* TEXTE */
+.details-text p {
+    font-size: 18px;
+    margin-bottom: 15px;
+}
+
+.desc-title {
+    font-weight: bold;
+    margin-top: 20px;
+}
+
+.description {
+    line-height: 1.6;
+    color: #333;
+}
+
+/* FOOTER */
+.footer-actions {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    margin-top: 50px;
+}
+
+.btn-retour {
+    background: #0a7d2c;
+    opacity: 0.9;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+    .details-layout {
+        grid-template-columns: 1fr;
+        gap: 30px;
+        text-align: center;
+    }
+
+    .footer-actions {
+        flex-direction: column;
+        gap: 20px;
+    }
+}
+.nom{
+    font-size: 20px;
+}
+.footer{
+    display: flex;
+    justify-content: center;
+   gap: 20px;
+}

@@ -23,6 +23,12 @@ namespace Controllers
             var produits=_servive.afficherProduitByType(type);
             return View("Index",produits);
         }
+         [HttpGet]
+        public IActionResult Details(int id)
+        {
+            var produit=_servive.getProduitById(id);
+            return View("Details",produit);
+        }
         
     }
 }

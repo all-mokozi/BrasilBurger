@@ -20,5 +20,10 @@ namespace Impl
         {
             return _repo.selectByType( type);
         }
+        
+        public Produit getProduitById(int id)
+        {
+            return _repo.selectById(id);
+        }
 }
 }

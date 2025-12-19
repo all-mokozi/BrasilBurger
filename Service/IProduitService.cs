@@ -7,5 +7,6 @@ namespace Service
     {
         public IEnumerable<Produit> afficherAllProduit();
         public IEnumerable<Produit> afficherProduitByType(String type);
+        public Produit getProduitById(int id );
     }
 }

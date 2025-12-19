@@ -31,6 +31,9 @@ protected override void OnModelCreating(ModelBuilder modelBuilder)
     modelBuilder.Entity<Produit>()
         .Property(p => p.TypeProduit)
         .HasConversion<string>();
+    modelBuilder.Entity<Commande>()
+        .Property(c=>c.ModeC)
+        .HasConversion<string>();
 
 
 

@@ -6,6 +6,7 @@ namespace Repository
     {
         public IEnumerable<Produit> selectAllProduit();
          public IEnumerable<Produit> selectByType(String type);
+         public Produit selectById(int id );
         
     }
 

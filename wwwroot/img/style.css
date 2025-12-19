@@ -1,0 +1,194 @@
+@import url('https://fonts.googleapis.com/css2?family=Itim&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    
+}
+
+body {
+    background: #f4f4f4;
+    padding: 30px;
+     font-family: 'Itim', cursive;
+    font-weight: 100;
+   
+}
+.Moyen img{
+    width: 38px;
+    border-radius: 4px;
+    height: 38px;
+
+}
+
+.modal {
+    background: white;
+    max-width: 900px;
+    margin: auto;
+    border-radius: 10px;
+    padding: 20px 30px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+.gauche {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(12px, 2vw, 24px);
+}
+.logo {
+    width: 196px;        /* taille desktop */
+    max-width: 100%;     /* responsive */
+    height: 53px;        /* garde les proportions */
+    /* border-radius: 12px; */
+}
+
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+/* .nom{
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    align-items: center;
+    gap: 20px;
+} */
+.Moyen{
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    align-items: center;
+    gap: 20px;
+}
+
+.logo {
+    background: #0a7d2c;
+    color: white;
+    padding: 8px 15px;
+    border-bottom-left-radius: 8px;
+    border-top-right-radius: 8px;
+    box-shadow: 0 4px 6px rgba(6, 96, 33, 0.4);
+    font-weight: bold;
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    text-align: center;
+    align-items: center;
+}
+
+.close {
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+h1 {
+    text-align: center;
+    margin: 20px 0;
+}
+
+.content {
+    display: flex;
+    gap: 40px;
+    margin-top: 50px;
+}
+
+.image-box img {
+    width: 260px;        /* taille desktop */
+    max-width: 100%;     /* responsive */
+    height: auto;        /* garde les proportions */
+    border-radius: 12px;
+    
+}
+.logo img {
+    width: 33px;
+    /* border-radius: 10px; */
+}
+
+.details p {
+    margin-bottom: 15px;
+
+}
+.details{
+    display: flex;
+    justify-content: space-between;
+    gap: 50px;
+}
+
+.quantite {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.quantite button {
+    width: 15px;
+    height: 15px;
+    border: none;
+    
+    border-radius: 50%;
+    cursor: pointer;
+    color: #f4f4f4;
+   
+}
+ .left {
+ 
+    background: #E94646;
+    
+}
+ .right {
+ 
+    background: #4FE734;
+    
+}
+
+.qte {
+    font-weight: bold;
+}
+
+.mode {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 15px;
+}
+
+.complement {
+    width: 100%;
+    padding: 8px;
+    margin-top: 20px;
+    background-color: #07622C;
+    color: #ededed;
+    font-weight: bold;
+    border-radius: 5px;
+}
+
+.paiement {
+    display: flex;
+    gap: 20px;
+   
+}
+
+.footer {
+    text-align: center;
+    margin-top: 30px;
+}
+
+.btn-commande {
+    background: #0a7d2c;
+    color: white;
+    border: none;
+    padding: 12px 30px;
+    font-size: 20px;
+     font-family: 'Itim', cursive;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-bottom: 50px;
+}
+
+.btn-commande:hover {
+    background: #066021;
+}
