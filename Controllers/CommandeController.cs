@@ -110,9 +110,7 @@ public class CommandeController : Controller
     }
     public IActionResult MesCommandes()
 {
-    int clientId = 1; // À remplacer par l'utilisateur connecté
-    
-    // On récupère les commandes avec les infos du produit
+    int clientId = 1; 
     var mesCommandes = _service.GetCommandeByClientId(clientId);
 
     return View(mesCommandes);
