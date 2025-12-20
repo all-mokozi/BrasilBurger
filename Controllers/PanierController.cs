@@ -1,7 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Service;
 using Models;
-
+using Microsoft.AspNetCore.Authorization;
+[Authorize]
 public class PanierController : Controller
 {
     private readonly IPanierService _panierService;
@@ -14,7 +15,7 @@ public class PanierController : Controller
     [HttpGet]
     public IActionResult Index()
     {
-        int clientId = 1; 
+        int clientId = 2; 
         var panier = _panierService.ObtenirPanierClient(clientId);
         return View(panier);
     }
@@ -23,7 +24,7 @@ public class PanierController : Controller
     
 public IActionResult Ajouter(int ProduitId, int Quantite, ModeConso ModeConsommation) 
 {
-    int clientId = 1;
+    int clientId = 2;
     try 
     {
         // On passe ModeConsommation qui vient du formulaire
@@ -39,7 +40,7 @@ public IActionResult Ajouter(int ProduitId, int Quantite, ModeConso ModeConsomma
 [Route("Panier/Valider")] 
 public IActionResult Valider()
 {
-    int clientId = 1;
+    int clientId = 2;
     try 
     {
         _panierService.ValiderLePanier(clientId);

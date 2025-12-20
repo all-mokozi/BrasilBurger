@@ -6,7 +6,7 @@ namespace Data
     {
         public BrasilBurgerDbContext(DbContextOptions<BrasilBurgerDbContext> options) : base(options)
         { }
-        public DbSet<Client> clients { get; set; }
+        public DbSet<Utilisateur> Utilisateurs { get; set; }
         public DbSet<Commande> Commandes{ get; set; }
         public DbSet<Quartier> Quartiers { get; set; }
         public DbSet<LigneCommande> LigneCommandes{ get; set; }
@@ -23,6 +23,8 @@ protected override void OnModelCreating(ModelBuilder modelBuilder)
         .WithMany(p => p.ComposantsDuMenu)
         .HasForeignKey(mc => mc.MenuId)
         .OnDelete(DeleteBehavior.Restrict);
+         modelBuilder.Entity<Utilisateur>()
+        .ToTable("utilisateur"); // 
 
     modelBuilder.Entity<MenuComposant>()
         .HasOne(mc => mc.ProduitComposant)

@@ -1,0 +1,275 @@
+@model Models.RegisterViewModel
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Créer un compte | Brasil Burger</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Itim&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Itim', cursive;
+            background: #f4f4f4;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* ====== CONTAINER ====== */
+        .auth-container {
+            background: #ffffff;
+            width: 1000px;
+            max-width: 95%;
+            min-height: 560px;
+            border-radius: 18px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.15);
+            display: flex;
+            overflow: hidden;
+        }
+
+        /* ====== LEFT ====== */
+        .auth-left {
+            flex: 1;
+            padding: 40px 50px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        /* LOGO */
+        .logo {
+            background: #0a7d2c;
+            padding: 12px 22px;
+            border-radius: 14px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            width: fit-content;
+            margin-bottom: 35px;
+            box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+        }
+
+        .logo img {
+            width: 45px;
+            height: 45px;
+        }
+
+        .logo .brasil {
+            color: #000;
+            font-weight: 800;
+            font-size: 20px;
+        }
+
+        .logo .burger {
+            color: #FFC30F;
+            font-weight: 800;
+            font-size: 20px;
+        }
+
+        h1 {
+            font-size: 28px;
+            margin-bottom: 8px;
+            color: #000;
+        }
+
+        .subtitle {
+            font-size: 15px;
+            margin-bottom: 30px;
+            color: #555;
+        }
+
+        .subtitle a {
+            color: #0a7d2c;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        /* ====== FORM ====== */
+        .form-group {
+            margin-bottom: 14px;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px 14px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            font-family: 'Itim', cursive;
+            font-size: 15px;
+            outline: none;
+            transition: 0.2s;
+        }
+
+        input:focus {
+            border-color: #0a7d2c;
+            box-shadow: 0 0 0 2px rgba(10,125,44,0.15);
+        }
+
+        /* Style pour les erreurs de validation */
+        .text-danger {
+            color: #E94646;
+            font-size: 13px;
+            margin-top: 4px;
+            display: block;
+        }
+
+        .options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 10px 0 20px;
+            font-size: 14px;
+        }
+
+        .options label {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .options input[type="checkbox"] {
+            width: auto;
+        }
+
+        .options a {
+            color: #0a7d2c;
+            text-decoration: none;
+        }
+
+        /* BUTTON */
+        .btn-submit {
+            background: #0a7d2c;
+            color: white;
+            border: none;
+            padding: 14px;
+            border-radius: 12px;
+            font-size: 17px;
+            font-weight: 600;
+            letter-spacing: 1.5px;
+            cursor: pointer;
+            transition: 0.3s;
+            width: 100%;
+        }
+
+        .btn-submit:hover {
+            background: #086628;
+            transform: translateY(-1px);
+        }
+
+        /* ====== RIGHT ====== */
+        .auth-right {
+            flex: 1;
+            background: #f7f7f7;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 30px;
+        }
+
+        .auth-right img {
+            width: 100%;
+            max-width: 480px;
+            border-radius: 20px;
+            box-shadow: 0 20px 45px rgba(0,0,0,0.25);
+        }
+
+        @* @media (max-width: 768px) {
+            .auth-container {
+                flex-direction: column;
+            }
+
+            .auth-right {
+                display: none;
+            }
+        } *@
+    </style>
+</head>
+
+<body>
+
+    <div class="auth-container">
+
+        <div class="auth-left">
+            <div class="logo">
+                
+                <img src="~/img/hamburger-junk-food-white-icon-png-image-701751694972500plxqkzef6f-removebg-preview.png" alt="logo">
+                <span class="brasil">Brasil</span>
+                <span class="burger">Burger</span>
+            </div>
+
+            <h1>Créer un compte</h1>
+            <p class="subtitle">
+                Vous avez déjà un compte ?
+                <a asp-controller="Auth" asp-action="Login">Se connecter</a>
+            </p>
+
+            <form asp-controller="Auth" asp-action="Register" method="post">
+                
+          
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                <div class="form-group">
+                    <input asp-for="Nom" type="text" placeholder="Nom complet">
+                    <span asp-validation-for="Nom" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <input asp-for="Telephone" type="tel" placeholder="Numéro de téléphone">
+                    <span asp-validation-for="Telephone" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <input asp-for="Email" type="email" placeholder="Email">
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <input asp-for="Password" type="password" placeholder="Mot de passe">
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <input asp-for="ConfirmPassword" type="password" placeholder="Confirmer le mot de passe">
+                    <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                </div>
+
+                <div class="options">
+                    <label>
+                        <input type="checkbox">
+                        Se souvenir de moi
+                    </label>
+                    <a href="#">Mot de passe oublié</a>
+                </div>
+
+                <button type="submit" class="btn-submit">
+                    CREER UN COMPTE
+                </button>
+            </form>
+        </div>
+
+        <div class="auth-right">
+            <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=900&q=80"
+                 alt="Burger Brasil">
+        </div>
+
+    </div>
+
+    @* Scripts pour la validation côté client (facultatif mais recommandé) *@
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jquery.validate.unobtrusive.min.js"></script>
+
+</body>
+</html>

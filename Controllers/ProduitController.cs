@@ -1,10 +1,11 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Models;
 using Service;
 
 namespace Controllers
 {
-    
+    [AllowAnonymous]
     public class ProduitController : Controller
     {
         private readonly IProduitService _servive;
@@ -15,6 +16,14 @@ namespace Controllers
         public IActionResult Index()
         {
             var produits=_servive.afficherAllProduit();
+            
+    
+    bool estConnecte = User.Identity.IsAuthenticated;
+    string nomUtilisateur = User.Identity.Name;
+    
+    // Passer ces informations à la vue
+    ViewData["EstConnecte"] = estConnecte;
+    ViewData["NomUtilisateur"] = nomUtilisateur;
             return View(produits);
             
         }

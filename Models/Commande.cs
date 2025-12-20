@@ -27,8 +27,11 @@ public class Commande
     [Column("quantite")]
     public int Quantite { get; set; } = 1;
 
-    [Column("client_id")]
+      [Column("client_id")]
     public int ClientId { get; set; }
+    
+    [ForeignKey("ClientId")]
+    public Utilisateur Client { get; set; }
 
     // --- RELATION PRODUIT ---
     [Column("produit_id")]

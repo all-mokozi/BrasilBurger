@@ -1,8 +1,9 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Models;
 using Service;
 using System.ComponentModel.DataAnnotations;
-
+[Authorize]
 public class CommandeController : Controller
 {
     private readonly IcommandeService _service;
@@ -49,7 +50,7 @@ public class CommandeController : Controller
 
         var commande = new Commande
         {
-            ClientId = 1, // À remplacer par l'ID de l'utilisateur connecté plus tard
+            ClientId = 2, 
             DateCommande = DateTime.UtcNow,
             MontantTotal = Quantite * produit.Prix,
             ModeC = ModeConsommation,
@@ -89,7 +90,7 @@ public class CommandeController : Controller
     {
         try
         {
-            // On récupère la commande via le service
+            
             var commande = _service.GetCommandeById(commandeId);
 
             if (commande != null)
@@ -98,7 +99,7 @@ public class CommandeController : Controller
                 TempData["Success"] = "Produit retiré du panier.";
             }
 
-            // On redirige vers l'index du Panier pour voir la mise à jour
+         
             return RedirectToAction("Index", "Panier");
         }
         catch (Exception ex)
@@ -110,7 +111,7 @@ public class CommandeController : Controller
     }
     public IActionResult MesCommandes()
 {
-    int clientId = 1; 
+    int clientId = 2; 
     var mesCommandes = _service.GetCommandeByClientId(clientId);
 
     return View(mesCommandes);
