@@ -1,4 +1,5 @@
 using Data;
+using Microsoft.AspNetCore.Mvc;
 using Models;
 using Repository;
 
@@ -30,10 +31,15 @@ namespace Impl
                 .OrderByDescending(p=>p.Id )
                 .ToList();
         }
-        public Produit selectById(int id)
+        public Produit? SelectById(int id)
 
         {
-            return _context.Produits.Find(id);
+            
+          return _context.Produits.Find(id);
+          
+                  
+          
+           
             
         }
        

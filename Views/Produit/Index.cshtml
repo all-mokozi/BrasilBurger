@@ -126,30 +126,58 @@
             border-radius: 50%;
             border: 2px solid white;
         }
+
         .logo {
-    width: 196px;        /* taille desktop */
-    max-width: 100%;     /* responsive */
-    height: 53px;        /* garde les proportions */
-    /* border-radius: 12px; */
-}
-.logo {
-    
-    color: white;
-    padding: 8px 15px;
-    border-bottom-left-radius: 8px;
-    border-top-right-radius: 8px;
-    box-shadow: 0 4px 6px rgba(6, 96, 33, 0.4);
-    font-weight: bold;
-    display: flex;
-    gap: 10px;
-    justify-content: center;
-    text-align: center;
-    align-items: center;
-}
-.logo img {
-    width: 33px;
-    /* border-radius: 10px; */
-}
+            width: 196px;
+            max-width: 100%;
+            height: 53px;
+            
+        }
+
+        .logo {
+
+            color: white;
+            padding: 8px 15px;
+            border-bottom-left-radius: 8px;
+            border-top-right-radius: 8px;
+            box-shadow: 0 4px 6px rgba(6, 96, 33, 0.4);
+            font-weight: bold;
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            text-align: center;
+            align-items: center;
+        }
+
+        .logo img {
+            width: 33px;
+            /* border-radius: 10px; */
+        }
+
+        .btn-add-cart {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background-color: var(--brasil-green);
+            color: white !important;
+           
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            border: 2px solid white;
+
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            z-index: 10;
+        }
+
+        .btn-add-cart:hover {
+            color: white;
+            background-color: #08632d;
+        }
     </style>
 </head>
 
@@ -168,9 +196,14 @@
             <div class="search-container mx-auto d-none d-md-block">
                 <input type="text" class="form-control search-input" placeholder="Rechercher...">
             </div>
-            <a href="#" class="cart-link text-white text-decoration-none">
+            <a asp-controller="Panier" asp-action="Index" class="cart-link text-white text-decoration-none">
                 <i class="fas fa-shopping-cart fa-lg"></i>
             </a>
+            <div class="div">
+                <h2>
+                    Mes Commandes
+                </h2>
+            </div>
         </div>
     </nav>
 
@@ -206,7 +239,14 @@
                     <div class="col">
                         <div class="card card-product h-100">
                             <div class="product-image-container">
-                                <button class="btn-add-cart"><i class="fas fa-shopping-cart"></i></button>
+                                <div class="product-image-container">
+                                    <a asp-controller="Commande" asp-action="Commande" asp-route-id="@produit.Id"
+                                        class="btn-add-cart">
+                                        <i class="fas fa-shopping-cart"></i>
+                                    </a>
+                                    <img src="@produit.Image" alt="@produit.Nom">
+                                </div>
+
                                 <img src="@(string.IsNullOrEmpty(produit.Image) ? "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=500" : produit.Image)"
                                     alt="@produit.Nom">
                             </div>
@@ -217,7 +257,7 @@
 
                                 <h5 class="text-dark">@produit.Prix FCFA</h5>
 
-                                <a asp-controller="Produit" asp-action="Details" asp-route-id="@produit.Id"
+                                <a asp-controller="Commande" asp-action="Commande" asp-route-id="@produit.Id"
                                     class="btn btn-outline-success btn-sm mt-3  w-50">
                                     Voir Détails
                                 </a>

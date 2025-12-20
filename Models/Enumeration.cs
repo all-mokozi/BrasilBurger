@@ -11,7 +11,7 @@ namespace Models
     {
         SUR_PLACE,
         EMPORTER,
-        A_LIVRER
+        LIVRAISON
     }
      public enum ModePaiement
     {

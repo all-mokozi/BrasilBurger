@@ -13,6 +13,12 @@ builder.Services.AddDbContext<BrasilBurgerDbContext>(options =>
     options.UseNpgsql(connectionString));
 builder.Services.AddScoped<IProduitRepository, ProduitRepository>();
 builder.Services.AddScoped<IProduitService, ProduitServiceImpl>();
+builder.Services.AddScoped<IcommandeService, CommandeServiceImpl>();
+builder.Services.AddScoped<ICommandeRepository, CommandeRepositoryImpl>();
+builder.Services.AddScoped<IZoneRepository,ZoneRepositoryImpl>();
+builder.Services.AddScoped<IZoneService,ZoneServiceImpl>();
+builder.Services.AddScoped<IPanierRepository, PanierRepositoryImpl>();
+builder.Services.AddScoped<IPanierService, PanierServiceImpl>();
 var app = builder.Build();
 
 

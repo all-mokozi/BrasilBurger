@@ -23,9 +23,8 @@ namespace Models
         [Required]
         [Column("commande_id")]
         public int CommandeId { get; set; }
-
-        public Commande Commande { get; set; } = null!;
-
+        [ForeignKey("CommandeId")]
+        public Commande? Commande { get; set; }
         [Required]
         [Column("produit_id")]
         public int ProduitId { get; set; }

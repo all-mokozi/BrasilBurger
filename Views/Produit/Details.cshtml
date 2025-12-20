@@ -54,20 +54,20 @@
                             @Model.Prix FCFA
                         </span>
                     </p>
-                       @if (Model.TypeProduit.ToString() == "MENU" 
-             && Model.ComposantsDuMenu?.Any() == true)
-        {
-            <p><strong>Composition du menu :</strong></p>
+                    @if (Model.TypeProduit.ToString() == "MENU"
+                                        && Model.ComposantsDuMenu?.Any() == true)
+                    {
+                        <p><strong>Composition du menu :</strong></p>
 
-            <ul>
-                @foreach (var composant in Model.ComposantsDuMenu)
-                {
-                    <li>
-                        @composant.ProduitComposant.Nom
-                    </li>
-                }
-            </ul>
-        }
+                        <ul>
+                            @foreach (var composant in Model.ComposantsDuMenu)
+                            {
+                                <li>
+                                    @composant.ProduitComposant.Nom
+                                </li>
+                            }
+                        </ul>
+                    }
 
                     <p>
                         <strong>Description :</strong><br>
@@ -84,7 +84,7 @@
                 ← Retour
             </a>
 
-            <a asp-action="Commander" asp-route-id="@Model.Id" class="btn-commande ">
+            <a asp-controller="Commande" asp-action="Commande" asp-route-id="@Model.Id" class="btn-commande">
                 🛒 Commander
             </a>
         </div>

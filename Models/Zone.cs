@@ -20,10 +20,8 @@ namespace Models
         [Range(0, double.MaxValue, ErrorMessage = "Le prix de livraison doit être >= 0")]
         public decimal PrixLivraison { get; set; }
 
-        // Navigation vers commandes
         public List<Commande>? Commandes { get; set; }
 
-        // Navigation vers quartiers
         public List<Quartier>? Quartiers { get; set; }
     }
 }

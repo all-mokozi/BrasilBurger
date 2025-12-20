@@ -18,8 +18,12 @@ build_property.GenerateRazorMetadataSourceChecksumAttributes =
 build_property.MSBuildProjectDirectory = C:\Users\mohma\Desktop\csharpC\BrasilBurger
 build_property._RazorSourceGeneratorDebug = 
 
-[C:/Users/mohma/Desktop/csharpC/BrasilBurger/Views/Commade/index.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ29tbWFkZVxpbmRleC5jc2h0bWw=
+[C:/Users/mohma/Desktop/csharpC/BrasilBurger/Views/Commande/Commande.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ29tbWFuZGVcQ29tbWFuZGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/mohma/Desktop/csharpC/BrasilBurger/Views/Commande/MesCommandes.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ29tbWFuZGVcTWVzQ29tbWFuZGVzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/mohma/Desktop/csharpC/BrasilBurger/Views/Home/Index.cshtml]
@@ -28,6 +32,10 @@ build_metadata.AdditionalFiles.CssScope =
 
 [C:/Users/mohma/Desktop/csharpC/BrasilBurger/Views/Home/Privacy.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQcml2YWN5LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/mohma/Desktop/csharpC/BrasilBurger/Views/Panier/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGFuaWVyXEluZGV4LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/mohma/Desktop/csharpC/BrasilBurger/Views/Produit/Details.cshtml]

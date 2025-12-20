@@ -1,0 +1,231 @@
+@model IEnumerable<Models.Commande>
+
+@{
+    Layout = null; // Supprimez cette ligne si vous utilisez un Layout commun (_Layout.cshtml)
+}
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mes Commandes - Brasil Burger</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Itim&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --primary-color: #0a7d2c;
+            --secondary-color: #FFC30F;
+            --danger-color: #E94646;
+            --bg-color: #f4f4f4;
+        }
+
+        body {
+            font-family: 'Itim', cursive;
+            background-color: var(--bg-color);
+            margin: 0;
+            padding: 20px;
+        }
+
+        .commandes-container {
+            max-width: 1000px;
+            margin: 40px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        /* Header / Logo */
+        .header-page {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 15px;
+        }
+
+        .logo-box {
+            background: var(--primary-color);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+        }
+
+        .logo-box span { font-size: 22px; font-weight: bold; }
+
+        h1 {
+            color: #333;
+            font-size: 28px;
+            margin: 0;
+        }
+
+        /* Table Design */
+        .table-responsive {
+            overflow-x: auto;
+        }
+
+        .commandes-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .commandes-table th {
+            text-align: left;
+            padding: 15px;
+            background-color: #f8f9fa;
+            color: #666;
+            border-bottom: 2px solid #eee;
+        }
+
+        .commandes-table td {
+            padding: 15px;
+            border-bottom: 1px solid #f1f1f1;
+            vertical-align: middle;
+        }
+
+        /* Éléments de ligne */
+        .ref { font-weight: bold; color: var(--primary-color); }
+        .price { font-weight: bold; color: #333; }
+        
+        .mode-tag {
+            background: #e9f5ec;
+            color: var(--primary-color);
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 14px;
+        }
+
+        /* Badges de Statut Dynamiques */
+        .status-badge {
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: bold;
+            display: inline-block;
+            text-transform: uppercase;
+        }
+
+        /* Classes basées sur cmd.Etat.ToLower() */
+        .valide { background: #d4edda; color: #155724; }
+        .en_cours { background: #fff3cd; color: #856404; }
+        .termine { background: #cce5ff; color: #004085; }
+        .annule { background: #f8d7da; color: #721c24; }
+
+        .btn-detail {
+            background: none;
+            border: 1px solid var(--primary-color);
+            color: var(--primary-color);
+            padding: 5px 10px;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: 0.3s;
+        }
+
+        .btn-detail:hover {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+        }
+
+        .empty-state i {
+            font-size: 60px;
+            color: #ccc;
+            margin-bottom: 20px;
+        }
+
+        .btn-primary {
+            background: var(--primary-color);
+            color: white;
+            padding: 12px 25px;
+            text-decoration: none;
+            border-radius: 8px;
+            display: inline-block;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="commandes-container">
+    <div class="header-page">
+        <a asp-controller="Produit" asp-action="Index" class="logo-box">
+            <i class="fas fa-hamburger"></i>
+            <span>Brasil<span style="color: var(--secondary-color);">Burger</span></span>
+        </a>
+        <h1><i class="fas fa-list-ul"></i> Mon Historique</h1>
+    </div>
+
+    @if (Model != null && Model.Any())
+    {
+        <div class="table-responsive">
+            <table class="commandes-table">
+                <thead>
+                    <tr>
+                        <th>Réf</th>
+                        <th>Date</th>
+                        <th>Détails Produit</th>
+                        <th>Consommation</th>
+                        <th>Total</th>
+                        <th>Statut</th>
+                        <th style="text-align: center;">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var cmd in Model)
+                    {
+                        <tr>
+                            <td class="ref">#@cmd.Id</td>
+                            <td>@cmd.DateCommande.ToString("dd MMM yyyy HH:mm")</td>
+                            <td>
+                                <strong>@cmd.Produit?.Nom</strong>
+                                <div style="font-size: 0.85em; color: #777;">Quantité : @cmd.Quantite</div>
+                            </td>
+                            <td>
+                                <span class="mode-tag">
+                                    <i class="fas fa-concierge-bell"></i> @cmd.ModeC.ToString().Replace("_", " ")
+                                </span>
+                            </td>
+                            <td class="price">@cmd.MontantTotal.ToString("N0") FCFA</td>
+                            <td>
+                                @* Génère une classe comme 'status-badge valide' *@
+                                <span class="status-badge @cmd.Etat.ToLower().Replace(" ", "_")">
+                                    @cmd.Etat
+                                </span>
+                            </td>
+                            <td style="text-align: center;">
+                                <a asp-action="Details" asp-route-id="@cmd.Id" class="btn-detail">
+                                    <i class="fas fa-eye"></i> Voir
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+    else
+    {
+        <div class="empty-state">
+            <i class="fas fa-shopping-basket"></i>
+            <p style="font-size: 20px; color: #666;">Vous n'avez pas encore passé de commande.</p>
+            <a asp-controller="Produit" asp-action="Index" class="btn-primary">Consulter le menu</a>
+        </div>
+    }
+</div>
+
+</body>
+</html>

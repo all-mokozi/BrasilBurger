@@ -1,0 +1,122 @@
+@model Models.Panier
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Mon Panier - Brasil Burger</title>
+    <link href="https://fonts.googleapis.com/css2?family=Itim&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* On garde ton CSS exact du deuxième design */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: #f4f4f4; padding: 30px; font-family: 'Itim', cursive; }
+        .modal { background: white; max-width: 900px; margin: auto; border-radius: 10px; padding: 20px 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); min-height: 500px; display: flex; flex-direction: column; }
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .logo { background: #0a7d2c; color: white; padding: 8px 15px; border-bottom-left-radius: 8px; border-top-right-radius: 8px; font-weight: bold; display: flex; gap: 10px; align-items: center; width: 196px; height: 53px; }
+        .logo img { width: 33px; }
+        .close { text-decoration: none; color: black; font-size: 20px; }
+        h1 { text-align: center; margin-bottom: 30px; }
+        .cart-container { flex-grow: 1; }
+        table { width: 100%; border-collapse: collapse; }
+        th { text-align: left; padding-bottom: 15px; color: #888; border-bottom: 2px solid #f4f4f4; }
+        td { padding: 15px 0; border-bottom: 1px solid #f4f4f4; vertical-align: middle; }
+        .cart-img { width: 60px; height: 60px; border-radius: 8px; object-fit: cover; margin-right: 15px; }
+        .product-info { display: flex; align-items: center; }
+        .product-name { font-size: 18px; color: #333; }
+        .product-option { font-size: 14px; color: #0a7d2c; }
+        .price-text { color: #0a7d2c; font-weight: bold; font-size: 18px; }
+        .btn-delete { background: #E94646; color: white; border: none; width: 32px; height: 32px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+        .cart-summary { margin-top: 30px; background: #f9fff9; padding: 20px; border-radius: 10px; border: 1px dashed #0a7d2c; display: flex; justify-content: space-between; align-items: center; }
+        .total-amount { font-size: 26px; color: #0a7d2c; font-weight: bold; }
+        .footer { text-align: center; margin-top: 30px; }
+        .btn-commande { background: #0a7d2c; color: white; border: none; padding: 12px 30px; font-size: 20px; font-family: 'Itim', cursive; border-radius: 8px; cursor: pointer; }
+    </style>
+</head>
+<body>
+
+    <div class="modal">
+        <div class="header">
+            <div class="logo">
+                <img src="~/img/logo.png" alt="logo">
+                <div class="nom"><span>Brasil</span><span style="color: #FFC30F;">Burger</span></div>
+            </div>
+            <a asp-controller="Produit" asp-action="Index" class="close">✕</a>
+        </div>
+
+        <h1>Mon Panier</h1>
+
+        <div class="cart-container">
+            @{
+                var articlesPanier = Model.Commandes?.Where(c => c.Etat == "EN_COURS").ToList();
+                var total = articlesPanier?.Sum(c => c.MontantTotal) ?? 0;
+            }
+
+            @if (articlesPanier != null && articlesPanier.Any())
+            {
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Produit</th>
+                            <th style="text-align: center;">Qté</th>
+                            <th>Prix</th>
+                            <th style="text-align: right;">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in articlesPanier)
+                        {
+                            <tr>
+                                <td>
+                                    <div class="product-info">
+                                        <img src="@item.Produit.Image" class="cart-img" alt="@item.Produit.Nom">
+                                        <div>
+                                            <div class="product-name">@item.Produit.Nom</div>
+                                            <div class="product-option">@item.ModeC/div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td style="text-align: center; font-weight: bold;">@item.Quantite</td>
+                                <td class="price-text">@item.MontantTotal.ToString("N0") FCFA</td>
+                                <td style="text-align: right;">
+                                   <form asp-controller="Commande" asp-action="Retirer" method="post">
+                                        <input type="hidden" name="commandeId" value="@item.Id" />
+                                        <button type="submit" class="btn-delete">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+
+                <div class="cart-summary">
+                    <span style="font-size: 22px;">Total à payer :</span>
+                    <span class="total-amount">@total.ToString("N0") FCFA</span>
+                </div>
+
+                <div class="footer">
+                    <form asp-controller="Panier" asp-action="Valider" method="post">
+                        <button type="submit" class="btn-commande">
+                            ✅ Valider la commande
+                        </button>
+                    </form>
+                </div>
+            }
+            else
+            {
+                <div style="text-align:center; padding: 40px;">
+                    <p style="font-size: 20px; color: #888;">Votre panier est vide 🍔</p>
+                    <br>
+                    <a asp-controller="Produit" asp-action="Index" class="btn-commande">Retour au menu</a>
+                </div>
+            }
+        </div>
+    </div>
+
+</body>
+</html>

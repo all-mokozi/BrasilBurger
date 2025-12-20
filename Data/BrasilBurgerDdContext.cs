@@ -13,6 +13,8 @@ namespace Data
         public DbSet<Paiement> Paiements { get; set; }
         public DbSet<Produit> Produits{ get; set; }
         public DbSet<MenuComposant> MenuComposants { get; set; }
+        public DbSet<Zone> Zones {get;set;}
+        public DbSet<Panier> Paniers {get;set;}
 
 protected override void OnModelCreating(ModelBuilder modelBuilder)
 {
@@ -31,18 +33,25 @@ protected override void OnModelCreating(ModelBuilder modelBuilder)
     modelBuilder.Entity<Produit>()
         .Property(p => p.TypeProduit)
         .HasConversion<string>();
+
+    modelBuilder.Entity<Produit>()
+        .Property(p => p.Prix)
+        .HasPrecision(18, 2);
+
     modelBuilder.Entity<Commande>()
-        .Property(c=>c.ModeC)
+        .HasOne(c => c.Panier)
+        .WithMany(p => p.Commandes)
+        .HasForeignKey(c => c.PanierId) // On utilise uniquement la propriété C#
+        .OnDelete(DeleteBehavior.Cascade);
+
+    modelBuilder.Entity<Commande>()
+        .Property(c => c.ModeC)
         .HasConversion<string>();
 
-
+    modelBuilder.Entity<Commande>()
+        .Property(c => c.MontantTotal)
+        .HasPrecision(18, 2);
 
     base.OnModelCreating(modelBuilder);
 }
-
-
-    
-    }
-
-
-}
+    }}

@@ -110,6 +110,14 @@ h1 {
 .details p {
     margin-bottom: 15px;
 
+
+}
+.hidden {
+    display: none;
+}
+
+.zone {
+    margin-top: 12px;
 }
 .details{
     display: flex;
