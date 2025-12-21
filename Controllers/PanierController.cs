@@ -2,6 +2,8 @@ using Microsoft.AspNetCore.Mvc;
 using Service;
 using Models;
 using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
+
 [Authorize]
 public class PanierController : Controller
 {
@@ -12,67 +14,52 @@ public class PanierController : Controller
         _panierService = panierService;
     }
 
+    private int GetClientId()
+    {
+        var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        if (userIdClaim == null) throw new UnauthorizedAccessException("Utilisateur non connecté");
+        return int.Parse(userIdClaim);
+    }
+
     [HttpGet]
     public IActionResult Index()
     {
-        int clientId = 2; 
+        int clientId = GetClientId();
         var panier = _panierService.ObtenirPanierClient(clientId);
         return View(panier);
     }
 
     [HttpPost]
-    
-public IActionResult Ajouter(int ProduitId, int Quantite, ModeConso ModeConsommation) 
-{
-    int clientId = 2;
-    try 
+    public IActionResult Ajouter(int ProduitId, int Quantite, ModeConso ModeConsommation)
     {
-        // On passe ModeConsommation qui vient du formulaire
-        _panierService.AjouterAuPanier(clientId, ProduitId, Quantite, ModeConsommation);
-        return RedirectToAction("Index");
+        int clientId = GetClientId();
+        try
+        {
+            _panierService.AjouterAuPanier(clientId, ProduitId, Quantite, ModeConsommation);
+            return RedirectToAction("Index");
+        }
+        catch (Exception ex)
+        {
+            TempData["Error"] = ex.Message;
+            return RedirectToAction("Index");
+        }
     }
-    catch (Exception ex)
-    {
-        return BadRequest(ex.Message);
-    }
-}
-[HttpPost]
-[Route("Panier/Valider")] 
-public IActionResult Valider()
-{
-    int clientId = 2;
-    try 
-    {
-        _panierService.ValiderLePanier(clientId);
-        return RedirectToAction(nameof(Index)); 
-    }
-    catch (Exception ex)
-    {
-        return RedirectToAction(nameof(Index));
-    }
-}
-    // [HttpPost]
-    // public IActionResult Supprimer(int commandeId)
-    // {
-    //     // On passe par le service plutôt que le context directement
-    //     _panierService.RetirerDuPanier(commandeId);
-    //     return RedirectToAction("Index");
-    // }
 
-    // [HttpPost]
-//     public IActionResult Valider()
-//     {
-//         int clientId = 1;
-//         try 
-//         {
-//             _panierService.ViderPanier(clientId); // Ou une méthode ConfirmerPanier
-//             TempData["Success"] = "Votre commande Brasil Burger est en route !";
-//             return RedirectToAction("Index", "Produit");
-//         }
-//         catch (Exception ex)
-//         {
-//             TempData["Error"] = "Erreur validation : " + ex.Message;
-//             return RedirectToAction("Index");
-//         }
-//     }
+    [HttpPost]
+    [Route("Panier/Valider")]
+    public IActionResult Valider()
+    {
+        int clientId = GetClientId();
+        try
+        {
+            _panierService.ValiderLePanier(clientId);
+            TempData["Success"] = "Votre commande a été validée avec succès !";
+            return RedirectToAction(nameof(Index));
+        }
+        catch (Exception ex)
+        {
+            TempData["Error"] = "Erreur lors de la validation : " + ex.Message;
+            return RedirectToAction(nameof(Index));
+        }
+    }
 }

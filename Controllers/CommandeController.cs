@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Models;
 using Service;
 using System.ComponentModel.DataAnnotations;
+using System.Security.Claims;
 [Authorize]
 public class CommandeController : Controller
 {
@@ -29,63 +30,66 @@ public class CommandeController : Controller
     }
 
     [HttpPost]
-    public IActionResult Confirmer(int ProduitId, int Quantite, ModeConso ModeConsommation, int? ZoneId)
+   [HttpPost]
+public IActionResult Confirmer(int ProduitId, int Quantite, ModeConso ModeConsommation, int? ZoneId)
+{
+    var produit = _produitService.getProduitById(ProduitId);
+    if (produit == null) return NotFound();
+
+    bool estLivraison = ModeConsommation == ModeConso.LIVRAISON;
+
+    if (Quantite <= 0 || (estLivraison && ZoneId == null))
     {
-        var produit = _produitService.getProduitById(ProduitId);
-        if (produit == null) return NotFound();
+        if (Quantite <= 0)
+            ModelState.AddModelError("Quantite", "La quantité doit être supérieure à 0.");
 
-        bool estLivraison = ModeConsommation == ModeConso.LIVRAISON;
+        if (estLivraison && ZoneId == null)
+            ModelState.AddModelError("ZoneId", "La zone de livraison est obligatoire pour ce mode.");
 
-        if (Quantite <= 0 || (estLivraison && ZoneId == null))
-        {
-            if (Quantite <= 0)
-                ModelState.AddModelError("Quantite", "La quantité doit être supérieure à 0.");
-
-            if (estLivraison && ZoneId == null)
-                ModelState.AddModelError("ZoneId", "La zone de livraison est obligatoire pour ce mode.");
-
-            ViewBag.Zones = _zoneService.GetAllZones() ?? new List<Zone>();
-            return View("Commande", produit);
-        }
-
-        var commande = new Commande
-        {
-            ClientId = 2, 
-            DateCommande = DateTime.UtcNow,
-            MontantTotal = Quantite * produit.Prix,
-            ModeC = ModeConsommation,
-            Etat = "VALIDE",
-            ZoneId = estLivraison ? ZoneId : null,
-            ProduitId = ProduitId,
-
-        };
-
-        var ligneCommande = new LigneCommande
-        {
-            ProduitId = ProduitId,
-            Quantite = Quantite,
-            PrixUnitaire = produit.Prix,
-            Commande = commande
-        };
-
-        try
-        {
-            _service.addCommande(commande, ligneCommande);
-
-            return RedirectToAction("Index", "Produit");
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"[ERREUR CONFIRMATION]: {ex.Message}");
-            if (ex.InnerException != null) Console.WriteLine($"[INNER]: {ex.InnerException.Message}");
-
-            ViewBag.Zones = _zoneService.GetAllZones() ?? new List<Zone>();
-            ModelState.AddModelError("", "Une erreur est survenue lors de l'enregistrement. Veuillez réessayer.");
-
-            return View("Commande", produit);
-        }
+        ViewBag.Zones = _zoneService.GetAllZones() ?? new List<Zone>();
+        return View("Commande", produit);
     }
-    [HttpPost]
+
+    // Récupération dynamique du ClientId depuis l'utilisateur connecté
+    var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+    if (userIdClaim == null) return Unauthorized();
+
+    int clientId = int.Parse(userIdClaim);
+
+    var commande = new Commande
+    {
+        ClientId = clientId, // Dynamique
+        DateCommande = DateTime.UtcNow,
+        MontantTotal = Quantite * produit.Prix,
+        ModeC = ModeConsommation,
+        Etat = "VALIDE",
+        ZoneId = estLivraison ? ZoneId : null,
+        ProduitId = ProduitId
+    };
+
+    var ligneCommande = new LigneCommande
+    {
+        ProduitId = ProduitId,
+        Quantite = Quantite,
+        PrixUnitaire = produit.Prix,
+        Commande = commande
+    };
+
+    try
+    {
+        _service.addCommande(commande, ligneCommande);
+        return RedirectToAction("Index", "Produit");
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"[ERREUR CONFIRMATION]: {ex.Message}");
+        if (ex.InnerException != null) Console.WriteLine($"[INNER]: {ex.InnerException.Message}");
+
+        ViewBag.Zones = _zoneService.GetAllZones() ?? new List<Zone>();
+        ModelState.AddModelError("", "Une erreur est survenue lors de l'enregistrement. Veuillez réessayer.");
+        return View("Commande", produit);
+    }
+}
     public IActionResult Retirer(int commandeId)
     {
         try
@@ -109,12 +113,17 @@ public class CommandeController : Controller
             return RedirectToAction("Index", "Panier");
         }
     }
-    public IActionResult MesCommandes()
+public IActionResult MesCommandes()
 {
-    int clientId = 2; 
+    var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+    if (userIdClaim == null) return Unauthorized();
+
+    int clientId = int.Parse(userIdClaim);
+
     var mesCommandes = _service.GetCommandeByClientId(clientId);
 
     return View(mesCommandes);
 }
+
   
 }

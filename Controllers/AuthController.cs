@@ -59,6 +59,7 @@ namespace Controllers
             {
                 var claims = new List<Claim>
                 {
+                     new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()), // <-- IMPORTAN
                     new Claim(ClaimTypes.Name, user.Nom),
                     new Claim(ClaimTypes.Email, user.Email),
                     new Claim(ClaimTypes.Role, user.Role),
