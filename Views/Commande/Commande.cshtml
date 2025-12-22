@@ -30,7 +30,7 @@
                     <span style="color: #FFC30F; font-weight: 100; font-size: 20px;">Burger</span>
                 </div>
             </div>
-            <a asp-action="Index" class="close" style="text-decoration:none; color:black;">✕</a>
+            <a asp-controller="Produit" asp-action="Index" class="close" style="text-decoration:none; color:black;">✕</a>
         </div>
 
         <h1>Commander maintenant</h1>
@@ -66,6 +66,7 @@
                             <input type="radio" name="MoyenPaiement" value="OM" required>
                             OrangeMoney <img src="~/img/WAVE-recrute-pour-ce-poste-12-Decembre-2024.png">
                         </label>
+
                     </div>
                 </div>
 
@@ -102,17 +103,14 @@
         </div>
 
         <div class="footer" style="display: flex; gap: 15px; justify-content: center;">
-    <button type="submit" 
-            asp-controller="Panier" 
-            asp-action="Ajouter" 
-            class="btn-panier">
-        <span>🛒 Ajouter au panier</span>
-    </button>
+            <button type="submit" asp-controller="Panier" asp-action="Ajouter" class="btn-commande">
+                <span>🛒 Ajouter au panier</span>
+            </button>
 
-    <button type="submit" class="btn-commande">
-        <span>⚡ Commander</span>
-    </button>
-</div>
+            <button type="submit" class="btn-commande">
+                <span>⚡ Commander</span>
+            </button>
+        </div>
     </form>
 
     <script>

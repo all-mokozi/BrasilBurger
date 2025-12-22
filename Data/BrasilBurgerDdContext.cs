@@ -43,7 +43,7 @@ protected override void OnModelCreating(ModelBuilder modelBuilder)
     modelBuilder.Entity<Commande>()
         .HasOne(c => c.Panier)
         .WithMany(p => p.Commandes)
-        .HasForeignKey(c => c.PanierId) // On utilise uniquement la propriété C#
+        .HasForeignKey(c => c.PanierId) 
         .OnDelete(DeleteBehavior.Cascade);
 
     modelBuilder.Entity<Commande>()

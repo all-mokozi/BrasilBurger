@@ -7,7 +7,7 @@ using System.Security.Claims;
 
 namespace Controllers
 {
-    public class AuthController: Controller
+    public class AuthController : Controller
     {
         private readonly IUtilisateurService _userService;
 
@@ -16,13 +16,14 @@ namespace Controllers
             _userService = userService;
         }
 
-        
+
 
         [HttpGet]
         public IActionResult Register() => View();
 
         [HttpPost]
-        public IActionResult Register(RegisterViewModel model)
+        [HttpPost]
+        public async Task<IActionResult> Register(RegisterViewModel model)
         {
             if (!ModelState.IsValid) return View(model);
 
@@ -31,13 +32,30 @@ namespace Controllers
                 Nom = model.Nom,
                 Email = model.Email,
                 Telephone = model.Telephone,
-                Password = model.Password 
+                Password = model.Password,
+                Role = "CLIENT", 
+
             };
 
             try
             {
                 _userService.Inscription(user);
-                return RedirectToAction("Login");
+
+                var claims = new List<Claim>
+        {
+            new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+            new Claim(ClaimTypes.Name, user.Nom),
+            new Claim(ClaimTypes.Email, user.Email),
+            new Claim(ClaimTypes.Role, user.Role),
+            new Claim("Id", user.Id.ToString())
+        };
+
+                var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+                var principal = new ClaimsPrincipal(identity);
+
+                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
+
+                return RedirectToAction("Index", "Produit");
             }
             catch (Exception ex)
             {
@@ -78,10 +96,10 @@ namespace Controllers
             return View();
         }
 
-       public async Task<IActionResult> Logout()
-{
-    await HttpContext.SignOutAsync();
-    return RedirectToAction("Index", "Produit"); 
-}
+        public async Task<IActionResult> Logout()
+        {
+            await HttpContext.SignOutAsync();
+            return RedirectToAction("Index", "Produit");
+        }
     }
 }

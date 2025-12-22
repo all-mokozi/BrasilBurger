@@ -16,7 +16,9 @@ namespace Impl
 
         public void Insert(Commande c)
         {
-            _context.Commandes.Add(c); // Utilise le nom exact de ton DbSet
+            _context.Commandes.Add(c);
+          
+             // Utilise le nom exact de ton DbSet
             _context.SaveChanges();
         }
 

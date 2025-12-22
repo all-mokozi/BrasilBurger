@@ -9,15 +9,21 @@ namespace Impl
     public class CommandeServiceImpl : IcommandeService
     {
         private readonly ICommandeRepository _repo;
-        public CommandeServiceImpl(ICommandeRepository repo)
+        private readonly ILigneCommandeRepository _ligneCrepo;
+        private readonly IPaiementRepository _paiementRepo;
+        public CommandeServiceImpl(ICommandeRepository repo,ILigneCommandeRepository ligneCrepo,IPaiementRepository paiementRepo)
         {
             _repo = repo;
+             _ligneCrepo=ligneCrepo;
+             _paiementRepo=paiementRepo;
 
         }
 
-        public void addCommande(Commande c, LigneCommande l)
+        public void addCommande(Commande c, LigneCommande l,Paiement p)
         {
             _repo.Insert(c);
+            _ligneCrepo.Insert(l);
+            _paiementRepo.Insert(p);
         }
         public void SupprimerProduitDuPanier(int commandeId)
         {

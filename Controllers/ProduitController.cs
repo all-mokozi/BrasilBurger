@@ -21,7 +21,6 @@ namespace Controllers
     bool estConnecte = User.Identity.IsAuthenticated;
     string nomUtilisateur = User.Identity.Name;
     
-    // Passer ces informations à la vue
     ViewData["EstConnecte"] = estConnecte;
     ViewData["NomUtilisateur"] = nomUtilisateur;
             return View(produits);

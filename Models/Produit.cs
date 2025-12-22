@@ -35,6 +35,7 @@ namespace Models
         [Column("is_archived")]
         public bool IsArchived { get; set; } = false;
 
+        
           public ICollection<MenuComposant> ComposantsDuMenu { get; set; }
             = new List<MenuComposant>();
 
@@ -43,4 +44,3 @@ namespace Models
             = new List<MenuComposant>();
     }
     }
-

@@ -47,7 +47,6 @@ public class Commande
     [ForeignKey(nameof(PanierId))]
     public virtual Panier? Panier { get; set; }
 
-    // --- RELATION ZONE ---
     [Column("zone_id")]
     public int? ZoneId { get; set; }
 

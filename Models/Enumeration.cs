@@ -15,8 +15,9 @@ namespace Models
     }
      public enum ModePaiement
     {
-        Wave,
-        OrangeMoney
+        WAVE,
+        OM,
+        ESPECES
         
     }
     public enum TypeProduit

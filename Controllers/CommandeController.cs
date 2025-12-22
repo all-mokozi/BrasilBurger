@@ -30,8 +30,7 @@ public class CommandeController : Controller
     }
 
     [HttpPost]
-   [HttpPost]
-public IActionResult Confirmer(int ProduitId, int Quantite, ModeConso ModeConsommation, int? ZoneId)
+public IActionResult Confirmer(int ProduitId, int Quantite, ModeConso ModeConsommation, int? ZoneId, ModePaiement MoyenPaiement )
 {
     var produit = _produitService.getProduitById(ProduitId);
     if (produit == null) return NotFound();
@@ -50,7 +49,6 @@ public IActionResult Confirmer(int ProduitId, int Quantite, ModeConso ModeConsom
         return View("Commande", produit);
     }
 
-    // Récupération dynamique du ClientId depuis l'utilisateur connecté
     var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
     if (userIdClaim == null) return Unauthorized();
 
@@ -58,13 +56,14 @@ public IActionResult Confirmer(int ProduitId, int Quantite, ModeConso ModeConsom
 
     var commande = new Commande
     {
-        ClientId = clientId, // Dynamique
+        ClientId = clientId, 
         DateCommande = DateTime.UtcNow,
         MontantTotal = Quantite * produit.Prix,
         ModeC = ModeConsommation,
         Etat = "VALIDE",
         ZoneId = estLivraison ? ZoneId : null,
-        ProduitId = ProduitId
+        ProduitId = ProduitId,
+        Quantite = Quantite,
     };
 
     var ligneCommande = new LigneCommande
@@ -74,10 +73,20 @@ public IActionResult Confirmer(int ProduitId, int Quantite, ModeConso ModeConsom
         PrixUnitaire = produit.Prix,
         Commande = commande
     };
+  var paiement = new Paiement
+{
+    Montant = Quantite * produit.Prix,
+    MethodePaiement = MoyenPaiement.ToString(), 
+    DatePaiement = DateTime.UtcNow,
+    Commande = commande ,
+    ReferenceTransaction= "REF:"+ Guid.NewGuid().ToString("N")[..8].ToUpper(),
+
+
+};
 
     try
     {
-        _service.addCommande(commande, ligneCommande);
+        _service.addCommande(commande, ligneCommande,paiement);
         return RedirectToAction("Index", "Produit");
     }
     catch (Exception ex)
