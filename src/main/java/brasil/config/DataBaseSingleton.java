@@ -12,7 +12,7 @@ public class DataBaseSingleton {
     
     private final String URL = "jdbc:postgresql://ep-empty-paper-adt5nf3z-pooler.c-2.us-east-1.aws.neon.tech:5432/brasilBurger?sslmode=require";
     private final String USER = "neondb_owner"; 
-    private final String PASS = "npg_JU1ZOSpfd7lj";
+    private final String PASS = "npg_5M4GFzVxNhfP";
 
     private DataBaseSingleton() {
         try {
