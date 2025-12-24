@@ -19,16 +19,24 @@ WORKDIR /var/www/html
 
 # Copie des fichiers du projet
 COPY . .
+
+# Définition de l'environnement en production
 ENV APP_ENV=prod
-# Installation des dépendances Symfony
+
+# Installation des dépendances Symfony (sans les scripts qui ont besoin de la DB)
 RUN composer install --no-dev --optimize-autoloader --no-scripts
+
+# --- CORRECTION CRUCIALE ---
+# On crée de force le dossier var et ses sous-dossiers
+RUN mkdir -p var/cache var/log var/sessions
+# ---------------------------
 
 # Changement de la racine d'Apache vers le dossier /public de Symfony
 ENV APACHE_DOCUMENT_ROOT /var/www/html/public
 RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf
 RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf
 
-# Permissions pour le cache et les logs
+# Maintenant, chown fonctionnera car var/ existe
 RUN chown -R www-data:www-data var/
 
 # Port exposé par Render
