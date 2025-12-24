@@ -1,0 +1,14 @@
+services:
+  - type: web
+    name: brasil-burger-symfony
+    runtime: docker # <--- On change PHP pour Docker
+    plan: free
+    region: frankfurt
+    branch: Symfony
+    envVars:
+      - key: APP_ENV
+        value: prod
+      - key: APP_SECRET
+        generateValue: true
+      - key: DATABASE_URL
+        value: ${DATABASE_URL}
