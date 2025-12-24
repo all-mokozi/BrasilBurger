@@ -19,9 +19,9 @@ WORKDIR /var/www/html
 
 # Copie des fichiers du projet
 COPY . .
-
+ENV APP_ENV=prod
 # Installation des dépendances Symfony
-RUN composer install --no-dev --optimize-autoloader
+RUN composer install --no-dev --optimize-autoloader --no-scripts
 
 # Changement de la racine d'Apache vers le dossier /public de Symfony
 ENV APACHE_DOCUMENT_ROOT /var/www/html/public
