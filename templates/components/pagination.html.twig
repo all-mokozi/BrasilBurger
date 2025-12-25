@@ -1,0 +1,14 @@
+<div class="pagination">
+    <a class="page-btn {{ pageEnCours <= 1 ? 'disabled' : '' }}" 
+       href="{{ path('app_commande', app.request.query.all|merge({ page: pageEnCours - 1 })) }}">
+        <i class="fa-solid fa-chevron-left"></i>
+    </a>
+
+    <span class="page-btn active">{{ pageEnCours }}</span>
+    <span class="page-info"> {{ totalPages }}</span>
+
+    <a class="page-btn {{ pageEnCours >= totalPages ? 'disabled' : '' }}" 
+       href="{{ path('app_commande', app.request.query.all|merge({ page: pageEnCours + 1 })) }}">
+        <i class="fa-solid fa-chevron-right"></i>
+    </a>
+</div>

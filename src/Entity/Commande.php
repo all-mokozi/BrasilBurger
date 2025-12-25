@@ -2,11 +2,12 @@
 
 namespace App\Entity;
 
-use App\Repository\CommandeRepository;
+
+use App\Repository\Impl\CommandeRepositoryImpl as ImplCommandeRepositoryImpl;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: CommandeRepository::class)]
+#[ORM\Entity(repositoryClass: ImplCommandeRepositoryImpl::class)]
 #[ORM\Table(name: "commande")]
 class Commande
 {
@@ -33,8 +34,21 @@ class Commande
     #[ORM\Column(type: Types::INTEGER)]
     private ?int $quantite = 1;
 
-    #[ORM\Column(name: "client_id", type: Types::INTEGER,nullable: true)]
-    private ?int $clientId = null;
+    #[ORM\ManyToOne(targetEntity: Utilisateur::class)]
+    #[ORM\JoinColumn(name: "client_id", referencedColumnName: "id", nullable: true)]
+    private ?Utilisateur $client = null;
+
+    public function getClient(): ?Utilisateur
+    {
+        return $this->client;
+    }
+
+    public function setClient(?Utilisateur $client): self
+    {
+        $this->client = $client;
+        return $this;
+    }
+
 
     #[ORM\Column(name: "livreur_id", type: Types::INTEGER, nullable: true)]
     private ?int $livreurId = null;
@@ -45,9 +59,20 @@ class Commande
     #[ORM\Column(name: "panier_id", type: Types::INTEGER, nullable: true)]
     private ?int $panierId = null;
 
-    #[ORM\Column(name: "produit_id", type: Types::INTEGER, nullable: false)]
-    private ?int $produitId = null;
+    #[ORM\ManyToOne(targetEntity: Produit::class)]
+    #[ORM\JoinColumn(name: "produit_id", referencedColumnName: "id", nullable: false)]
+    private ?Produit $produit = null;
 
+    public function getProduit(): ?Produit
+    {
+        return $this->produit;
+    }
+
+    public function setProduit(?Produit $produit): self
+    {
+        $this->produit = $produit;
+        return $this;
+    }
 
     public function getId(): ?int
     {
@@ -114,15 +139,7 @@ class Commande
         return $this;
     }
 
-    public function getClientId(): ?int
-    {
-        return $this->clientId;
-    }
-    public function setClientId(int $clientId): self
-    {
-        $this->clientId = $clientId;
-        return $this;
-    }
+
 
     public function getLivreurId(): ?int
     {
@@ -151,16 +168,6 @@ class Commande
     public function setPanierId(?int $panierId): self
     {
         $this->panierId = $panierId;
-        return $this;
-    }
-
-    public function getProduitId(): ?int
-    {
-        return $this->produitId;
-    }
-    public function setProduitId(?int $produitId): self
-    {
-        $this->produitId = $produitId;
         return $this;
     }
 }

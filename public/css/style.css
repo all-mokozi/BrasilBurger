@@ -1,0 +1,320 @@
+/* Reset et styles de base */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    background-color: #f0f2f5;
+    height: 100vh;
+    overflow: hidden; /* Pour éviter le scroll sur le body entier */
+}
+
+.container {
+    display: flex;
+    height: 100%;
+}
+
+/* --- SIDEBAR --- */
+.sidebar {
+    width: 260px;
+    background-color: #006b3f; /* Vert Brésil */
+    color: white;
+    display: flex;
+    flex-direction: column;
+    padding: 30px 20px;
+    justify-content: space-between;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 50px;
+}
+
+.logo i {
+    font-size: 1.8rem;
+}
+
+.logo .highlight {
+    color: #ffd700; /* Jaune */
+}
+
+.sidebar nav ul {
+    list-style: none;
+}
+
+.sidebar nav ul li {
+    margin-bottom: 15px;
+}
+
+.section-title {
+    color: #8ecfa0;
+    font-size: 0.9rem;
+    margin: 20px 0 10px 0;
+    font-weight: 500;
+}
+
+.sidebar a {
+    text-decoration: none;
+    color: white;
+    display: flex;
+    align-items: center;
+    padding: 12px 15px;
+    border-radius: 8px;
+    transition: 0.3s;
+    font-weight: 500;
+}
+
+.sidebar a i {
+    margin-right: 15px;
+    width: 20px;
+    text-align: center;
+}
+
+/* État actif (Tableau de bord) */
+.sidebar a.active {
+    background-color: #ffd700;
+    color: #006b3f;
+    font-weight: 700;
+}
+
+.sidebar a:hover:not(.active) {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.logout-container {
+    margin-top: auto;
+}
+
+.btn-logout {
+    background: transparent;
+    border: 1px solid white;
+    color: white;
+    padding: 10px 20px;
+    width: 100%;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 500;
+    transition: 0.3s;
+}
+
+.btn-logout:hover {
+    background-color: white;
+    color: #006b3f;
+}
+
+/* --- MAIN CONTENT --- */
+.main-content {
+    flex: 1;
+    padding: 20px 40px;
+    overflow-y: auto;
+    background-color: #ebebeb;
+}
+
+/* Header */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+header h2 {
+    color: #1a1a1a;
+    font-weight: 700;
+}
+
+.user-profile {
+    width: 40px;
+    height: 40px;
+    border: 1px solid #ccc;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #6c5ce7; /* Couleur icône utilisateur */
+    background: white;
+    cursor: pointer;
+}
+
+/* Stats Cards */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.card {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    border-left: 5px solid transparent; /* Pour la bordure colorée */
+}
+
+.card-green-border { border-left-color: #006b3f; }
+.card-yellow-border { border-left-color: #ffd700; }
+.card-green-light-border { border-left-color: #6ab04c; }
+.card-red-border { border-left-color: #eb4d4b; }
+
+.icon-box {
+    width: 45px;
+    height: 45px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+}
+
+/* Couleurs des icônes stats */
+.green-bg { background-color: #e0f2f1; color: #006b3f; }
+.yellow-bg { background-color: #fff9c4; color: #fbc02d; }
+.light-green-bg { background-color: #e8f5e9; color: #6ab04c; }
+.red-bg { background-color: #ffebee; color: #eb4d4b; }
+
+.card-info p {
+    font-size: 0.85rem;
+    color: #666;
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+.card-info h3 {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #333;
+}
+
+/* --- TABLE SECTION --- */
+.recent-orders {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+
+.table-header-control {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.filter-box {
+    border: 1px solid #ccc;
+    padding: 5px 15px;
+    border-radius: 5px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.styled-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.styled-table thead tr {
+    background-color: #006b3f;
+    color: #ffd700; /* Texte jaune pour l'en-tête */
+    text-align: left;
+}
+
+.styled-table th, .styled-table td {
+    padding: 15px;
+}
+
+.styled-table th {
+    font-weight: 600;
+    font-size: 0.95rem;
+}
+
+.styled-table tbody tr {
+    border-bottom: 1px solid #eee;
+}
+
+.styled-table tbody tr:hover {
+    background-color: #f9f9f9;
+}
+
+.styled-table td {
+    font-size: 0.9rem;
+    color: #333;
+    font-weight: 500;
+}
+
+/* Badges d'état */
+.status {
+    padding: 6px 12px;
+    border-radius: 20px;
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-align: center;
+    display: inline-block;
+    min-width: 80px;
+}
+
+.status.valid {
+    background-color: #10ac84; /* Vert Validée */
+}
+
+.status.cancel {
+    background-color: #eb4d4b; /* Rouge Annulée */
+}
+
+.status.pending {
+    background-color: #fbc02d; /* Jaune En Attente */
+}
+
+/* Icone action (Oeil) */
+.action-icon {
+    font-size: 1.1rem;
+    cursor: pointer;
+}
+.green-icon { color: #10ac84; }
+.red-icon { color: #eb4d4b; }
+.yellow-icon { color: #fbc02d; }
+
+/* Pagination */
+.pagination {
+    display: flex;
+    justify-content: flex-end; /* Alignement à droite */
+    margin-top: 20px;
+    gap: 5px;
+}
+
+.page-btn {
+    border: 1px solid #ddd;
+    background: white;
+    padding: 5px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    color: #555;
+}
+
+.page-btn.active {
+    background-color: #eee;
+    font-weight: bold;
+}
+
+/* Responsive simple pour petits écrans */
+@media (max-width: 1024px) {
+    .stats-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+}

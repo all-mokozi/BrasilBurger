@@ -2,11 +2,12 @@
 
 namespace App\Entity;
 
+use App\Repository\Impl\UtilisateurRepository as ImplUtilisateurRepository;
 use App\Repository\UtilisateurRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 
-#[ORM\Entity(repositoryClass: UtilisateurRepository::class)]
+#[ORM\Entity(repositoryClass: ImplUtilisateurRepository::class)]
 #[ORM\Table(name: "utilisateur")]
 
 class Utilisateur
