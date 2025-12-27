@@ -36,4 +36,21 @@ public function list(Request $request): Response
         'pageEnCours' => $page,
         'totalPages' => $totalPages,
     ]);
-}}
+}
+
+
+#[Route('/{id}', name: 'app_commande_show', methods: ['GET', 'POST'])]
+public function show(int $id): Response
+{
+    $commande = $this->commandeService->findById($id);
+
+    if (!$commande) {
+        throw $this->createNotFoundException('Commande non trouvée');
+    }
+
+    return $this->render('commande/show.html.twig', [
+        'commande' => $commande,
+    ]);
+}
+
+}

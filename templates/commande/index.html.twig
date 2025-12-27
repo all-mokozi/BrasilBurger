@@ -136,7 +136,11 @@
 									<span class="status valid">{{ commande.etat }}</span>
 								</td>
 								<td>
-									<i class="fa-regular fa-eye action-icon green-icon"></i>
+
+									<a href="{{ path('app_commande_show', { id: commande.id }) }}" class="action-icon green-icon">
+										<i class="fa-regular fa-eye"></i>
+									</a>
+
 								</td>
 							</tr>
 						{% endfor %}

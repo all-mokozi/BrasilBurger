@@ -1,6 +1,5 @@
 <?php
 namespace App\Service\Impl;
-
 use App\Repository\CommandeRepositoryInterface;
 
 use App\Service\CommandeServiceInterface;
@@ -18,6 +17,11 @@ class CommandeServiceImpl implements CommandeServiceInterface
     public function countCommandes(): int
     {
         return $this->commandeRepository->countAll();
+    }
+    public function findById(int $id)
+    {
+        return $this->commandeRepository->findById($id);
+        
     }
    
     

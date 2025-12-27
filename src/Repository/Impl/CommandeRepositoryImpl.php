@@ -55,6 +55,11 @@ public function countAll(): int
         ->getQuery()
         ->getSingleScalarResult();
 }
+public function findById(int $id): ?Commande
+{
+    return $this->find($id);
+}
+
 
    
 
