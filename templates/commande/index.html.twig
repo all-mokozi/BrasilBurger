@@ -92,13 +92,13 @@
 									<strong>{{ commande.produit.nom }}</strong>
 								</td>
 								<td>{{ commande.dateCommande|date('d/m/Y') }}</td>
-								<td>{{ commande.modeLivraison }}</td>
+								<td>{% include 'components/afficherModeLivraison.html.twig' with {'modeLivraison': commande.modeLivraison} %}</td>
 								<td>
 									{% include 'components/statut.html.twig' with {'etat': commande.etat} %}
 								</td>
 								<td>
 
-									<a href="{{ path('app_commande_show', { id: commande.id }) }}" class="action-icon green-icon">
+									<a href="{{ path('app_commande_show', { id: commande.id, page: pageEnCours }) }}" class="action-icon green-icon">
 										<i class="fa-regular fa-eye"></i>
 									</a>
 

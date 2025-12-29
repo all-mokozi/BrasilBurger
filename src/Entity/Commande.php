@@ -28,12 +28,15 @@ class Commande
     #[ORM\Column(name: "mode_livraison", length: 20, nullable: true)]
     private ?string $modeLivraison = null;
 
-    #[ORM\Column(name: "adresse_livraison", length: 255, nullable: true)]
-    private ?string $adresseLivraison = null;
+    // #[ORM\Column(name: "adresse_livraison", length: 255, nullable: true)]
+    // private ?string $adresseLivraison = null;
 
     #[ORM\Column(type: Types::INTEGER)]
     private ?int $quantite = 1;
 
+    #[ORM\ManyToOne(targetEntity: Zone::class)]
+    #[ORM\JoinColumn(name: "Zone_id", referencedColumnName: "id", nullable: true)]
+    private ?Zone $zone = null;
     #[ORM\ManyToOne(targetEntity: Utilisateur::class)]
     #[ORM\JoinColumn(name: "client_id", referencedColumnName: "id", nullable: true)]
     private ?Utilisateur $client = null;
@@ -46,6 +49,16 @@ class Commande
     public function setClient(?Utilisateur $client): self
     {
         $this->client = $client;
+        return $this;
+    }
+    public function getZone(): ?Zone
+    {
+        return $this->zone;
+    }
+
+    public function setZone(?Zone $zone): self
+    {
+        $this->zone = $zone;
         return $this;
     }
 
@@ -119,15 +132,15 @@ class Commande
         return $this;
     }
 
-    public function getAdresseLivraison(): ?string
-    {
-        return $this->adresseLivraison;
-    }
-    public function setAdresseLivraison(?string $adresseLivraison): self
-    {
-        $this->adresseLivraison = $adresseLivraison;
-        return $this;
-    }
+    // public function getAdresseLivraison(): ?string
+    // {
+    //     return $this->adresseLivraison;
+    // }
+    // public function setAdresseLivraison(?string $adresseLivraison): self
+    // {
+    //     $this->adresseLivraison = $adresseLivraison;
+    //     return $this;
+    // }
 
     public function getQuantite(): ?int
     {

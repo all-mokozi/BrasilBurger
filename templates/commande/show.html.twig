@@ -18,7 +18,7 @@
 			<section class="recent-orders">
 				<div class="table-header-control">
 					<h3>Informations Générales</h3>
-					<a href="{{ path('app_commande') }}" class="filter-box" style="text-decoration: none; color: inherit;">
+					<a href="{{ path('app_commande', { page: page }) }}" class="filter-box" style="text-decoration: none; color: inherit;">
 						<i class="fa-solid fa-arrow-left"></i>
 						Retour
 					</a>
@@ -35,10 +35,10 @@
 							{{ commande.client.telephone|default('N/A') }}</p>
 						<p style="margin: 5px 0;">
 							<strong>Mode:</strong>
-							{{ commande.modeLivraison }}</p>
+							{% include 'components/afficherModeLivraison.html.twig' with {'modeLivraison': commande.modeLivraison} %}</p>
 						<p style="margin: 5px 0;">
 							<strong>Adresse:</strong>
-							{{ commande.adresseLivraison|default('Retrait comptoir') }}</p>
+							{{ commande.zone.nom|default('Retrait comptoir') }}</p>
 						{% if commande.modeLivraison == 'LIVRAISON' %}
 							<p style="margin: 5px 0;">
 								<strong>Livreur</strong>

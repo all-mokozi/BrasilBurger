@@ -18,12 +18,14 @@ class UtilisateurRepositoryImpl extends ServiceEntityRepository implements Utili
     }
     public function findUtilisateurById(int $id): ?Utilisateur
     {
-        return $this->createQueryBuilder('u')
-            ->select('u.id', 'u.nom', 'u.prenom')
-            ->where('u.id = :id')
-            ->setParameter('id', $id)
-            ->getQuery()
-            ->getResult();
+         return $this->createQueryBuilder('u')
+        ->where('u.id = :id')
+        ->andWhere('u.role = :role')
+        ->setParameter('id', $id)
+        ->setParameter('role', 'LIVREUR')
+        ->getQuery()
+        ->getOneOrNullResult();
+        
     }
 
     public function list(array $criteria = [], array $orderBy = [], ?int $limit = null, ?int $offset = null): array
@@ -48,6 +50,23 @@ class UtilisateurRepositoryImpl extends ServiceEntityRepository implements Utili
         }
 
         return $qb->getQuery()->getResult();
+    }
+    public function countAll(): int
+    {
+        return (int) $this->createQueryBuilder('u')
+            ->select('COUNT(u.id)')
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
+
+    public function countByRole(string $role): int
+    {
+        return (int) $this->createQueryBuilder('u')
+            ->select('COUNT(u.id)')
+            ->where('u.role = :role')
+            ->setParameter('role', $role)
+            ->getQuery()
+            ->getSingleScalarResult();
     }
 
 //    /**

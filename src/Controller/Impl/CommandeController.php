@@ -40,7 +40,7 @@ public function list(Request $request): Response
 
 
 #[Route('/commandes/{id}', name: 'app_commande_show', methods: ['GET'])]
-public function show(int $id): Response
+public function show(int $id, Request $request): Response
 {
     $commande = $this->commandeService->findById($id);
 
@@ -48,8 +48,11 @@ public function show(int $id): Response
         throw $this->createNotFoundException('Commande non trouvée');
     }
 
+    $page = $request->query->getInt('page', 1);
+
     return $this->render('commande/show.html.twig', [
         'commande' => $commande,
+        'page' => $page,
     ]);
 }
 #[Route('/commandes/{id}/etat', name: 'app_commande_change_etat', methods: ['POST'])]

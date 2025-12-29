@@ -382,3 +382,24 @@ header h2 {
 .status.valid { background-color: #006b3f; color: #ffd700; }
 .status.pending { background-color: #fbc02d; color: #333; }
 .status.cancel { background-color: #eb4d4b; color: white; }
+
+.btn-create {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background-color: #1f8ef1;
+    color: #fff;
+    padding: 10px 16px;
+    border-radius: 8px;
+    font-weight: 500;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+}
+
+.btn-create i {
+    font-size: 14px;
+}
+
+.btn-create:hover {
+    background-color: #0f6cd1;
+}
