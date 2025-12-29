@@ -3,19 +3,20 @@
 namespace App\Repository\Impl;
 
 use App\Entity\Utilisateur;
+use App\Repository\UtilisateurRepositoryInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * @extends ServiceEntityRepository<Utilisateur>
  */
-class UtilisateurRepository extends ServiceEntityRepository
+class UtilisateurRepositoryImpl extends ServiceEntityRepository implements UtilisateurRepositoryInterface
 {
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Utilisateur::class);
     }
-    public function findUtilisateurById(int $id)
+    public function findUtilisateurById(int $id): ?Utilisateur
     {
         return $this->createQueryBuilder('u')
             ->select('u.id', 'u.nom', 'u.prenom')
@@ -23,6 +24,30 @@ class UtilisateurRepository extends ServiceEntityRepository
             ->setParameter('id', $id)
             ->getQuery()
             ->getResult();
+    }
+
+    public function list(array $criteria = [], array $orderBy = [], ?int $limit = null, ?int $offset = null): array
+    {
+        $qb = $this->createQueryBuilder('u');
+
+        foreach ($criteria as $field => $value) {
+            $qb->andWhere("u.$field = :$field")
+               ->setParameter($field, $value);
+        }
+
+        foreach ($orderBy as $field => $direction) {
+            $qb->addOrderBy("u.$field", $direction);
+        }
+
+        if ($limit !== null) {
+            $qb->setMaxResults($limit);
+        }
+
+        if ($offset !== null) {
+            $qb->setFirstResult($offset);
+        }
+
+        return $qb->getQuery()->getResult();
     }
 
 //    /**

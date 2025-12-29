@@ -39,7 +39,7 @@ public function list(Request $request): Response
 }
 
 
-#[Route('/{id}', name: 'app_commande_show', methods: ['GET', 'POST'])]
+#[Route('/commandes/{id}', name: 'app_commande_show', methods: ['GET'])]
 public function show(int $id): Response
 {
     $commande = $this->commandeService->findById($id);
@@ -52,5 +52,19 @@ public function show(int $id): Response
         'commande' => $commande,
     ]);
 }
+#[Route('/commandes/{id}/etat', name: 'app_commande_change_etat', methods: ['POST'])]
+public function changeEtat(Request $request, int $id): Response
+{
+    $newStatus = $request->request->get('etat');
 
+    $success = $this->commandeService->changeEtat($id, $newStatus);
+
+    if (!$success) {
+        throw $this->createNotFoundException('Impossible de modifier l’état');
+    }
+
+    return $this->redirectToRoute('app_commande_show', [
+        'id' => $id
+    ]);
+}
 }

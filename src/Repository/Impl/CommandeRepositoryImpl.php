@@ -59,6 +59,15 @@ public function findById(int $id): ?Commande
 {
     return $this->find($id);
 }
+public function save(Commande $commande): void
+{
+    $this->getEntityManager()->persist($commande);
+
+    
+        $this->getEntityManager()->flush();
+    
+}
+
 
 
    

@@ -1,87 +1,121 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Détails Commande #{{ commande.id }}{% endblock %}
+{% block title %}Détails Commande #{{ commande.id }}
+{% endblock %}
 
 {% block body %}
-<div class="container">
-    <aside class="sidebar">
-        <div class="logo">
-            <i class="fa-solid fa-burger"></i>
-            <span>Brasil<span class="highlight">Burger</span></span>
-        </div>
-        <nav>
-            <ul>
-                <li><a href="{{ path('app_commande') }}"><i class="fa-solid fa-chart-simple"></i> Tableau de Bord</a></li>
-                <li class="section-title">Gestion</li>
-                <li><a href="{{ path('app_commande') }}" class="active"><i class="fa-solid fa-cart-shopping"></i> Commandes</a></li>
-            </ul>
-        </nav>
-    </aside>
+	<div class="container">
+		{% include 'components/barLaterale.html.twig' %}
 
-    <main class="main-content">
-        <header>
-            <h2>Détails de la Commande #{{ commande.id }}</h2>
-            <div class="user-profile"><i class="fa-regular fa-user"></i></div>
-        </header>
+		<main class="main-content">
+			<header>
+				<h2>Détails de la Commande #{{ commande.id }}</h2>
+				<div class="user-profile">
+					<i class="fa-regular fa-user"></i>
+				</div>
+			</header>
 
-        <section class="recent-orders">
-            <div class="table-header-control">
-                <h3>Informations Générales</h3>
-                <a href="{{ path('app_commande') }}" class="filter-box" style="text-decoration: none; color: inherit;">
-                    <i class="fa-solid fa-arrow-left"></i> Retour
-                </a>
-            </div>
+			<section class="recent-orders">
+				<div class="table-header-control">
+					<h3>Informations Générales</h3>
+					<a href="{{ path('app_commande') }}" class="filter-box" style="text-decoration: none; color: inherit;">
+						<i class="fa-solid fa-arrow-left"></i>
+						Retour
+					</a>
+				</div>
 
-            <div style="display: flex; gap: 40px; margin-bottom: 30px; padding: 20px; background: #fcfcfc; border-radius: 8px; border: 1px solid #eee;">
-                <div style="flex: 1;">
-                    <h4 style="color: #006b3f; margin-bottom: 10px; border-bottom: 2px solid #ffd700; display: inline-block;">Client & Livraison</h4>
-                    <p style="margin: 5px 0;"><strong>Nom:</strong> {{ commande.client.nom }}</p>
-                    <p style="margin: 5px 0;"><strong>Téléphone:</strong> {{ commande.client.telephone|default('N/A') }}</p>
-                    <p style="margin: 5px 0;"><strong>Mode:</strong> {{ commande.modeLivraison }}</p>
-                    <p style="margin: 5px 0;"><strong>Adresse:</strong> {{ commande.adresseLivraison|default('Retrait comptoir') }}</p>
-                </div>
-                <div style="flex: 1;">
-                    <h4 style="color: #006b3f; margin-bottom: 10px; border-bottom: 2px solid #ffd700; display: inline-block;">Statut & Date</h4>
-                    <p style="margin: 5px 0;"><strong>Date de commande:</strong> {{ commande.dateCommande|date('d/m/Y H:i') }}</p>
-                    <p style="margin: 5px 0;"><strong>État actuel:</strong> <span class="status valid">{{ commande.etat }}</span></p>
-                    <p style="margin: 5px 0;"><strong>ID Transaction:</strong> #BB-{{ commande.id }}{{ "now"|date("Y") }}</p>
-                </div>
-            </div>
+				<div style="display: flex; gap: 40px; margin-bottom: 30px; padding: 20px; background: #fcfcfc; border-radius: 8px; border: 1px solid #eee;">
+					<div style="flex: 1;">
+						<h4 style="color: #006b3f; margin-bottom: 10px; border-bottom: 2px solid #ffd700; display: inline-block;">Client & Livraison</h4>
+						<p style="margin: 5px 0;">
+							<strong>Nom:</strong>
+							{{ commande.client.nom }}</p>
+						<p style="margin: 5px 0;">
+							<strong>Téléphone:</strong>
+							{{ commande.client.telephone|default('N/A') }}</p>
+						<p style="margin: 5px 0;">
+							<strong>Mode:</strong>
+							{{ commande.modeLivraison }}</p>
+						<p style="margin: 5px 0;">
+							<strong>Adresse:</strong>
+							{{ commande.adresseLivraison|default('Retrait comptoir') }}</p>
+						{% if commande.modeLivraison == 'LIVRAISON' %}
+							<p style="margin: 5px 0;">
+								<strong>Livreur</strong>
+								{{ commande.adresseLivraison|default('Retrait comptoir') }}
+							</p>
+						{% endif %}
 
-            <h3 style="margin-bottom: 15px;">Articles commandés</h3>
-            <table class="styled-table">
-                <thead>
-                    <tr>
-                        <th>Produit</th>
-                        <th>Prix Unitaire</th>
-                        <th style="text-align: center;">Quantité</th>
-                        <th style="text-align: right;">Total</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>
-                            <div style="display: flex; align-items: center; gap: 10px;">
-                                <i class="fa-solid fa-burger" style="color: #ffd700;"></i>
-                                <strong>{{ commande.produit.nom }}</strong>
-                            </div>
-                        </td>
-                        {# On calcule le prix unitaire si non stocké (Montant / Quantité) #}
-                        <td>{{ (commande.montantTotal / commande.quantite)|number_format(0, '.', ' ') }} FCFA</td>
-                        <td style="text-align: center;">x {{ commande.quantite }}</td>
-                        <td style="text-align: right; font-weight: 700; color: #006b3f;">{{ commande.montantTotal }} FCFA</td>
-                    </tr>
-                </tbody>
-                <tfoot>
-                    <tr style="background: #f9f9f9;">
-                        <td colspan="3" style="text-align: right; font-weight: 700; padding: 20px;">NET À PAYER :</td>
-                        <td style="text-align: right; font-weight: 800; font-size: 1.2rem; color: #006b3f; padding: 20px;">
-                            {{ commande.montantTotal }} FCFA
-                        </td>
-                    </tr>
-                </tfoot>
-            </table>
-        </section>
-    </main>
-</div>
+					</div>
+					<div style="flex: 1;">
+						<h4 style="color: #006b3f; margin-bottom: 10px; border-bottom: 2px solid #ffd700; display: inline-block;">Statut & Date</h4>
+						<p style="margin: 5px 0;">
+							<strong>Date de commande:</strong>
+							{{ commande.dateCommande|date('d/m/Y H:i') }}</p>
+						<p style="margin: 5px 0;">
+							<strong>État actuel:</strong>
+							{% include 'components/statut.html.twig' with {'etat': commande.etat} %}
+
+						</p>
+						<form method="post" action="{{ path('app_commande_change_etat', { id: commande.id }) }}" style="display: flex; gap: 10px; align-items: center; margin-top: 10px;">
+
+							<select name="etat" style="padding: 6px 12px; border-radius: 5px; border: 1px solid #006b3f; background: #fff; font-size: 14px; font-weight: 500; cursor: pointer;">
+								<option value="EN_COURS" {% if commande.etat == 'EN_COURS' %} selected {% endif %}>En cours</option>
+								<option value="VALIDE" {% if commande.etat == 'VALIDE' %} selected {% endif %}>Validée</option>
+								<option value="PRET" {% if commande.etat == 'PRET' %} selected {% endif %}>Prête</option>
+								<option value="TERMINE" {% if commande.etat == 'TERMINE' %} selected {% endif %}>Terminée</option>
+							</select>
+
+							<button type="submit" style="padding: 6px 14px; border-radius: 5px; border: none; background: #006b3f; color: #fff; font-weight: 600; cursor: pointer; transition: all 0.2s;">
+								Changer l’état
+							</button>
+						</form>
+
+
+						<p style="margin: 5px 0;">
+							<strong>ID Transaction:</strong>
+							#BB-{{ commande.id }}{{ "now"|date("Y") }}</p>
+					</div>
+				</div>
+
+				<h3 style="margin-bottom: 15px;">Articles commandés</h3>
+				<table class="styled-table">
+					<thead>
+						<tr>
+							<th>Produit</th>
+							<th>Prix Unitaire</th>
+							<th style="text-align: center;">Quantité</th>
+							<th style="text-align: right;">Total</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>
+								<div style="display: flex; align-items: center; gap: 10px;">
+									<i class="fa-solid fa-burger" style="color: #ffd700;"></i>
+									<strong>{{ commande.produit.nom }}</strong>
+								</div>
+							</td>
+							{# On calcule le prix unitaire si non stocké (Montant / Quantité) #}
+							<td>{{ (commande.montantTotal / commande.quantite)|number_format(0, '.', ' ') }}
+								FCFA</td>
+							<td style="text-align: center;">x
+								{{ commande.quantite }}</td>
+							<td style="text-align: right; font-weight: 700; color: #006b3f;">{{ commande.montantTotal }}
+								FCFA</td>
+						</tr>
+					</tbody>
+					<tfoot>
+						<tr style="background: #f9f9f9;">
+							<td colspan="3" style="text-align: right; font-weight: 700; padding: 20px;">NET À PAYER :</td>
+							<td style="text-align: right; font-weight: 800; font-size: 1.2rem; color: #006b3f; padding: 20px;">
+								{{ commande.montantTotal }}
+								FCFA
+							</td>
+						</tr>
+					</tfoot>
+				</table>
+			</section>
+		</main>
+	</div>
 {% endblock %}

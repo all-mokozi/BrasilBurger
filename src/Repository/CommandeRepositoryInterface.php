@@ -9,4 +9,5 @@ interface CommandeRepositoryInterface
     public function findAllWithClient();
     public function countAll(): int;
     public function findById(int $id): ?Commande;
+    public function save(Commande $commande): void;
 }

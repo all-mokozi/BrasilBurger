@@ -1,0 +1,20 @@
+{% set status_class = '' %}
+{% set icon = '' %}
+
+{% if etat == 'VALIDE' or etat == 'TERMINE' %}
+    {% set status_class = 'valid' %} {# Vert dans votre CSS #}
+    {% set icon = 'fa-check' %}
+{% elseif etat == 'EN_COURS' or etat == 'LIVRAISON' or etat == 'PRET' %}
+    {% set status_class = 'pending' %} {# Jaune dans votre CSS #}
+    {% set icon = 'fa-clock' %}
+{% elseif etat == 'ANNULE' %}
+    {% set status_class = 'cancel' %} {# Rouge dans votre CSS #}
+    {% set icon = 'fa-xmark' %}
+{% endif %}
+
+<span class="status {{ status_class }}" style="min-width: 100px;">
+    {% if icon is not empty %}
+        <i class="fa-solid {{ icon }} me-1"></i>
+    {% endif %}
+    {{ etat|replace({'_': ' '})|capitalize }}
+</span>

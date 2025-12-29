@@ -1,20 +1,123 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello UtilisateurController!{% endblock %}
+{% block title %}Gestion des Commandes
+{% endblock %}
+
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code>C:/Users/mohma/Desktop/symfonyExam/BrasilBurger/src/Controller/UtilisateurController.php</code></li>
-        <li>Your template at <code>C:/Users/mohma/Desktop/symfonyExam/BrasilBurger/templates/utilisateur/index.html.twig</code></li>
-    </ul>
-</div>
+	<div class="container">
+		<aside class="sidebar">
+			<div class="logo">
+				<i class="fa-solid fa-burger"></i>
+				<span>Brasil<span class="highlight">Burger</span>
+				</span>
+			</div>
+
+			<nav>
+				<ul>
+					<li>
+						<a href="#" class="active">
+							<i class="fa-solid fa-chart-simple"></i>
+							Tableau de Bord
+						</a>
+					</li>
+					<li class="section-title">Gestion</li>
+					<li>
+						<a href="#">
+							<i class="fa-solid fa-cart-shopping"></i>
+							Commandes
+						</a>
+					</li>
+					<li>
+						<a href="#">
+							<i class="fa-solid fa-truck"></i>
+							Livraisons
+						</a>
+					</li>
+					<li>
+						<a href="#">
+							<i class="fa-solid fa-truck"></i>
+							Livreurs
+						</a>
+					</li>
+					<li>
+						<a href="#">
+							<i class="fa-solid fa-users"></i>
+							Clients
+						</a>
+					</li>
+				</ul>
+			</nav>
+
+			<div class="logout-container">
+				<button class="btn-logout">Deconnexion</button>
+			</div>
+		</aside>
+
+		<main class="main-content">
+			<header>
+				<h2>DashBoard</h2>
+				<div class="user-profile">
+					<i class="fa-regular fa-user"></i>
+				</div>
+			</header>
+
+			<div class="stats-grid">
+				<div class="card card-green-border">
+					<div class="icon-box green-bg">
+						<i class="fa-regular fa-money-bill-1"></i>
+					</div>
+					<div class="card-info">
+						<p>Recette du jour</p>
+						<h3>1.004.500 FCFA</h3>
+					</div>
+				</div>
+				<div class="card card-yellow-border">
+					<div class="icon-box yellow-bg">
+						<i class="fa-regular fa-clock"></i>
+					</div>
+					<div class="card-info">
+						<p>En Cours</p>
+						<h3>12</h3>
+					</div>
+				</div>
+				<div class="card card-green-light-border">
+					<div class="icon-box light-green-bg">
+						<i class="fa-solid fa-check"></i>
+					</div>
+					<div class="card-info">
+						<p>Validee</p>
+						<h3>45</h3>
+					</div>
+				</div>
+				<div class="card card-red-border">
+					<div class="icon-box red-bg">
+						<i class="fa-solid fa-xmark"></i>
+					</div>
+					<div class="card-info">
+						<p>Annulee</p>
+						<h3>3</h3>
+					</div>
+				</div>
+			</div>
+
+			<section class="recent-orders">
+				<div class="table-header-control">
+					<h3>Commandes Recentes</h3>
+					<div class="filter-box">
+						<span>Filtrer Par Etat</span>
+						<i class="fa-solid fa-chevron-down"></i>
+					</div>
+				</div>
+
+				
+				{% include "components/pagination.html.twig" with {totalPages: totalPages, pageEnCours: pageEnCours, pathname: 'app_commande'} %}
+
+			</section>
+		</main>
+	</div>
+
+
 {% endblock %}

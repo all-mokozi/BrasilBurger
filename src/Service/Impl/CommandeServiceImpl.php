@@ -23,6 +23,18 @@ class CommandeServiceImpl implements CommandeServiceInterface
         return $this->commandeRepository->findById($id);
         
     }
+    public function changeEtat(int $id, string $newStatus): ?bool
+    {
+        $commande = $this->commandeRepository->findById($id);
+        if (!$commande) {
+            return null; 
+        }
+
+        $commande->setEtat($newStatus);
+        $this->commandeRepository->save($commande);
+
+        return true; 
+    }
    
     
 }
