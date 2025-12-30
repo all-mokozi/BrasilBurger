@@ -1,5 +1,5 @@
-# Utilise l'image PHP officielle avec Apache
-FROM php:8.4-apache
+# Stage 1 : Builder - installe toutes les dépendances
+FROM php:8.4-apache as builder
 
 # Installation des dépendances système et des extensions PHP
 RUN apt-get update && apt-get install -y \
@@ -8,9 +8,6 @@ RUN apt-get update && apt-get install -y \
     unzip \
     libicu-dev \
     && docker-php-ext-install pdo pdo_pgsql intl
-
-# Activation de mod_rewrite pour Apache
-RUN a2enmod rewrite
 
 # Installation de Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
@@ -21,18 +18,39 @@ WORKDIR /var/www/html
 # Copie du projet
 COPY . .
 
-# Variables fictives pour le build (avant l'installation)
+# Variables fictives pour le build
 ENV DATABASE_URL="postgresql://db_user:db_pass@127.0.0.1:5432/db_name?serverVersion=16&charset=utf8"
-ENV APP_SECRET=67d34c1ca291563f66810c9c45014878 
+ENV APP_SECRET=67d34c1ca291563f66810c9c45014878
 
-# Installation des dépendances PHP
-RUN composer install --no-dev --optimize-autoloader
+# Installation de TOUTES les dépendances (y compris dev) pour que DebugBundle soit disponible
+RUN composer install --optimize-autoloader
 
-# Définition de l'environnement en production (APRÈS composer install)
+# Définition de l'environnement en production
 ENV APP_ENV=prod
 
 # Exécuter les scripts du cache après l'installation complète
-RUN php bin/console cache:clear --env=prod --no-debug 2>&1 || true
+RUN php bin/console cache:clear --env=prod --no-debug
+
+# Stage 2 : Production - copie seulement ce qu'il faut
+FROM php:8.4-apache
+
+# Installation des dépendances système et des extensions PHP
+RUN apt-get update && apt-get install -y \
+    libpq-dev \
+    && docker-php-ext-install pdo pdo_pgsql intl \
+    && rm -rf /var/lib/apt/lists/*
+
+# Activation de mod_rewrite pour Apache
+RUN a2enmod rewrite
+
+# Définition du répertoire de travail
+WORKDIR /var/www/html
+
+# Copie du projet depuis le builder
+COPY --from=builder /var/www/html .
+
+# Définition de l'environnement en production
+ENV APP_ENV=prod
 
 # Configuration d'Apache pour pointer vers /public
 ENV APACHE_DOCUMENT_ROOT /var/www/html/public
