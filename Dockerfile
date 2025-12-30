@@ -31,6 +31,8 @@ ENV APP_SECRET=67d34c1ca291563f66810c9c45014878
 # Installation des dépendances PHP (sans scripts)
 RUN composer install --no-dev --optimize-autoloader --no-scripts
 
+RUN php bin/console cache:clear --env=prod --no-debug
+
 # Configuration d'Apache pour pointer vers /public
 ENV APACHE_DOCUMENT_ROOT /var/www/html/public
 RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf
