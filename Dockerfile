@@ -27,7 +27,7 @@ ENV APP_ENV=prod
 RUN composer install --no-dev --optimize-autoloader --no-scripts
 
 # 2. Installation des dépendances JS (AssetMapper) pour éviter l'erreur Stimulus
-RUN php bin/console importmap:install
+# RUN php bin/console importmap:install
 
 # 3. Création forcée des dossiers de cache et logs
 RUN mkdir -p var/cache var/log var/sessions
