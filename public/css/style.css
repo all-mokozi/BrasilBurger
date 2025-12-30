@@ -403,3 +403,33 @@ header h2 {
 .btn-create:hover {
     background-color: #0f6cd1;
 }
+.filter-form .table-header-control {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
+
+.filter-box {
+    position: relative;
+    display: flex;
+    align-items: center;
+    background: #f8f9fa;
+    padding: 8px 15px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+}
+
+.filter-box select, .filter-box input {
+    border: none;
+    background: transparent;
+    outline: none;
+    font-size: 14px;
+    color: #333;
+    cursor: pointer;
+}
+
+.reset-filter {
+    color: #e74c3c;
+    text-decoration: none;
+    font-size: 18px;
+}

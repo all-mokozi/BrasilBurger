@@ -14,9 +14,9 @@ class CommandeServiceImpl implements CommandeServiceInterface
     {
         return $this->commandeRepository->list($criteria, $orderBy, $limit, $offset);
     }
-    public function countCommandes(): int
+    public function countCommandes(array $criteria = []): int
     {
-        return $this->commandeRepository->countAll();
+        return $this->commandeRepository->countByCriteria($criteria);
     }
     public function findById(int $id)
     {
@@ -35,6 +35,29 @@ class CommandeServiceImpl implements CommandeServiceInterface
 
         return true; 
     }
-   
+    public function listerLivraison(): void
+    {
+        $this->commandeRepository->list(['modeLivraison' => 'LIVRAISON'], ['date_commande' => 'DESC'], null, null);
+    }
+
+    public function getRecetteDuJour(): float
+    {
+        return $this->commandeRepository->getRecetteDuJour();
+    }
+
+    public function countCommandesByEtat(string $etat): int
+    {
+        return $this->commandeRepository->countCommandesByEtat($etat);
+    }
+
+    public function getProduitPlusVendu(): ?string
+    {
+        return $this->commandeRepository->getProduitPlusVendu();
+    }
+
+    public function getProduitPlusVenduDuJour(): ?array
+    {
+        return $this->commandeRepository->getProduitPlusVenduDuJour();
+    }
     
 }

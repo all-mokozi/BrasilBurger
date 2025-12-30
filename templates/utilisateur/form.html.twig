@@ -1,0 +1,80 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Créer un Livreur{% endblock %}
+
+
+{% block body %}
+
+<style>
+    .recent-orders {
+        background: #ffffff;
+        padding: 25px;
+        border-radius: 10px;
+        max-width: 600px;
+        margin: 30px auto;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    form div {
+        margin-bottom: 15px;
+    }
+
+    label {
+        font-weight: 600;
+        display: block;
+        margin-bottom: 6px;
+        color: #333;
+    }
+
+    input {
+        width: 100%;
+        padding: 10px;
+        border-radius: 6px;
+        border: 1px solid #ccc;
+        font-size: 14px;
+    }
+
+    button {
+        background: #1d9b58ff;
+        color: white;
+        border: none;
+        padding: 12px;
+        width: 100%;
+        border-radius: 6px;
+        font-size: 16px;
+        cursor: pointer;
+    }
+
+    button:hover {
+        background: #16a085;
+    }
+</style>
+
+<div class="container">
+    {% include 'components/barLaterale.html.twig' %}
+
+    <main class="main-content">
+        <header>
+            <h2>Créer un Livreur</h2>
+        </header>
+
+        <section class="recent-orders">
+            {{ form_start(formLivreur,{attr: {'data-turbo': 'false'}}) }}
+
+                {{ form_row(formLivreur.nom) }}
+                {{ form_row(formLivreur.telephone) }}
+                {{ form_row(formLivreur.adresse) }}
+
+                {{ form_row(formLivreur.email) }}
+                <div class="" style="color: red;">
+                 {{form_errors(formLivreur.email) }}
+            </div>
+               
+                {{ form_row(formLivreur.password) }}
+                {{form_row(formLivreur.btnSaveEmploye) }}
+
+            {{ form_end(formLivreur) }}
+        </section>
+    </main>
+</div>
+{% endblock %}

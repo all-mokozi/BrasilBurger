@@ -13,61 +13,117 @@ final class CommandeController extends AbstractController
 {
 
     private readonly CommandeServiceInterface $commandeService;
-    
-    public function __construct(  CommandeServiceInterface $commandeService, private readonly EntityManagerInterface $manager)
+
+    public function __construct(CommandeServiceInterface $commandeService, private readonly EntityManagerInterface $manager)
     {
         $this->commandeService = $commandeService;
-        
     }
-  #[Route('/', name: 'app_commande', methods: ['GET', 'POST'])]
-public function list(Request $request): Response
-{
-    $page = $request->query->getInt('page', 1);
-    $limit = $this->getParameter('LIMIT_PER_PAGE');
-    $offset = ($page - 1) * $limit;
+    #[Route('/', name: 'app_commande', methods: ['GET', 'POST'])]
+    public function list(Request $request): Response
+    {
+        $page = $request->query->getInt('page', 1);
+        $etat = $request->query->get('etat');
+        $date = $request->query->get('date');
+        $client = $request->query->get('client');
 
-    $totalCommandes = $this->commandeService->countCommandes(); 
-    $totalPages = ceil($totalCommandes / $limit);
+        $limit = $this->getParameter('LIMIT_PER_PAGE');
+        $offset = ($page - 1) * $limit;
 
-    $commandes = $this->commandeService->list([], ['dateCommande' => 'DESC'], $limit, $offset);
+        $criteria = [];
+        if ($etat) {
+            $criteria['etat'] = $etat;
+        }
+        if ($date) {
+            $startDate = new \DateTime($date . ' 00:00:00');
+            $endDate = new \DateTime($date . ' 23:59:59');
+            $criteria['dateCommandeStart'] = $startDate;
+            $criteria['dateCommandeEnd'] = $endDate;
+        }
+        if ($client) {
+            $criteria['clientNom'] = $client;
+        }
 
-    return $this->render('commande/index.html.twig', [
-        'commandes' => $commandes,
-        'pageEnCours' => $page,
-        'totalPages' => $totalPages,
-    ]);
-}
+        $totalCommandes = $this->commandeService->countCommandes($criteria);
+        $totalPages = ceil($totalCommandes / $limit);
+        $commandes = $this->commandeService->list($criteria, ['dateCommande' => 'DESC'], $limit, $offset);
 
+        // Statistiques
+        $recetteDuJour = $this->commandeService->getRecetteDuJour();
+        $commandesTerminees = $this->commandeService->countCommandesByEtat('TERMINE');
+        $commandesValidees = $this->commandeService->countCommandesByEtat('VALIDE');
+        $produitPlusVenduDuJour = $this->commandeService->getProduitPlusVenduDuJour();
 
-#[Route('/commandes/{id}', name: 'app_commande_show', methods: ['GET'])]
-public function show(int $id, Request $request): Response
-{
-    $commande = $this->commandeService->findById($id);
+        return $this->render('commande/index.html.twig', [
+            'commandes' => $commandes,
+            'pageEnCours' => $page,
+            'totalPages' => $totalPages,
+            'filtres' => [
+                'etat' => $etat,
+                'date' => $date,
+                'client' => $client
+            ],
+            'recetteDuJour' => $recetteDuJour,
+            'commandesTerminees' => $commandesTerminees,
+            'commandesValidees' => $commandesValidees,
+            'produitPlusVenduDuJour' => $produitPlusVenduDuJour
+        ]);
+    }
+    #[Route('/livraison', name: 'app_livraison_list', methods: ['GET', 'POST'])]
 
-    if (!$commande) {
-        throw $this->createNotFoundException('Commande non trouvée');
+    public function listerLivraison(Request $request): Response
+    {
+        $filtre = [
+            'modeLivraison' => 'LIVRAISON',
+            'etat' => 'TERMINE',
+            'hasLivreur' => true
+
+        ];
+        $page = $request->query->getInt('page', 1);
+        $limit = $this->getParameter('LIMIT_PER_PAGE');
+        $offset = ($page - 1) * $limit;
+
+        $totalCommandes = $this->commandeService->countCommandes($filtre);
+        $totalPages = ceil($totalCommandes / $limit);
+
+        $commandes = $this->commandeService->list($filtre, ['dateCommande' => 'DESC'], $limit, $offset);
+
+        return $this->render('commande/livraison.html.twig', [
+            'commandes' => $commandes,
+            'pageEnCours' => $page,
+            'totalPages' => $totalPages,
+        ]);
     }
 
-    $page = $request->query->getInt('page', 1);
 
-    return $this->render('commande/show.html.twig', [
-        'commande' => $commande,
-        'page' => $page,
-    ]);
-}
-#[Route('/commandes/{id}/etat', name: 'app_commande_change_etat', methods: ['POST'])]
-public function changeEtat(Request $request, int $id): Response
-{
-    $newStatus = $request->request->get('etat');
+    #[Route('/commandes/{id}', name: 'app_commande_show', methods: ['GET'])]
+    public function show(int $id, Request $request): Response
+    {
+        $commande = $this->commandeService->findById($id);
 
-    $success = $this->commandeService->changeEtat($id, $newStatus);
+        if (!$commande) {
+            throw $this->createNotFoundException('Commande non trouvée');
+        }
 
-    if (!$success) {
-        throw $this->createNotFoundException('Impossible de modifier l’état');
+        $page = $request->query->getInt('page', 1);
+
+        return $this->render('commande/show.html.twig', [
+            'commande' => $commande,
+            'page' => $page,
+        ]);
     }
+    #[Route('/commandes/{id}/etat', name: 'app_commande_change_etat', methods: ['POST'])]
+    public function changeEtat(Request $request, int $id): Response
+    {
+        $newStatus = $request->request->get('etat');
 
-    return $this->redirectToRoute('app_commande_show', [
-        'id' => $id
-    ]);
-}
+        $success = $this->commandeService->changeEtat($id, $newStatus);
+
+        if (!$success) {
+            throw $this->createNotFoundException('Impossible de modifier l’état');
+        }
+
+        return $this->redirectToRoute('app_commande_show', [
+            'id' => $id
+        ]);
+    }
 }

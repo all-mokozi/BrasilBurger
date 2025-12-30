@@ -55,16 +55,29 @@ class Commande
     {
         return $this->zone;
     }
+   
 
-    public function setZone(?Zone $zone): self
+    public function setZone(?Zone $zone)
     {
         $this->zone = $zone;
-        return $this;
+        
     }
 
 
-    #[ORM\Column(name: "livreur_id", type: Types::INTEGER, nullable: true)]
-    private ?int $livreurId = null;
+#[ORM\ManyToOne(targetEntity: Utilisateur::class)]
+#[ORM\JoinColumn(name: "livreur_id", referencedColumnName: "id", nullable: true)]
+private ?Utilisateur $livreur = null;
+
+public function getLivreur(): ?Utilisateur
+{
+    return $this->livreur;
+}
+
+public function setLivreur(?Utilisateur $livreur): self
+{
+    $this->livreur = $livreur;
+    return $this;
+}
 
     #[ORM\Column(name: "zone_id", type: Types::INTEGER, nullable: true)]
     private ?int $zoneId = null;
@@ -154,15 +167,15 @@ class Commande
 
 
 
-    public function getLivreurId(): ?int
-    {
-        return $this->livreurId;
-    }
-    public function setLivreurId(?int $livreurId): self
-    {
-        $this->livreurId = $livreurId;
-        return $this;
-    }
+    // public function getLivreurId(): ?int
+    // {
+    //     return $this->livreurId;
+    // }
+    // public function setLivreurId(?int $livreurId): self
+    // {
+    //     $this->livreurId = $livreurId;
+    //     return $this;
+    // }
 
     public function getZoneId(): ?int
     {

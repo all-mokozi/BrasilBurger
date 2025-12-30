@@ -27,6 +27,16 @@ class UtilisateurRepositoryImpl extends ServiceEntityRepository implements Utili
         ->getOneOrNullResult();
         
     }
+    public function findOneClientByName(string $name): ?Utilisateur
+{
+    return $this->createQueryBuilder('u')
+        ->where('u.nom = :name')
+        ->andWhere('u.role = :role')
+        ->setParameter('name', $name)
+        ->setParameter('role', 'CLIENT')
+        ->getQuery()
+        ->getOneOrNullResult();
+}
 
     public function list(array $criteria = [], array $orderBy = [], ?int $limit = null, ?int $offset = null): array
     {
@@ -68,6 +78,16 @@ class UtilisateurRepositoryImpl extends ServiceEntityRepository implements Utili
             ->getQuery()
             ->getSingleScalarResult();
     }
+    public function save(Utilisateur $entity, bool $flush = false): void
+    {
+        $this->getEntityManager()->persist($entity);
+
+        if ($flush) {
+            $this->getEntityManager()->flush();
+        }
+    }
+    
+
 
 //    /**
 //     * @return Utilisateur[] Returns an array of Utilisateur objects

@@ -62,11 +62,11 @@
 				<div class="table-header-control">
 					<h3>La liste des livreurs</h3>
 					<div class="filter-box">
-						<a href="#" class="btn-create">
-						{# {{ path('app_utilisateur_new') }} #}
-    <i class="fa-solid fa-plus"></i>
-    Créer un utilisateur
-</a>
+						<a href="{{ path('app_utilisateur_create') }}" class="btn-create" style="background-color: #1d9b58ff; color: white; padding: 10px 15px; border-radius: 5px; text-decoration: none;">
+
+							<i class="fa-solid fa-plus"></i>
+							Créer un utilisateur
+						</a>
 					</div>
 				</div>
 
@@ -77,6 +77,7 @@
 							<th>NOM</th>
 							<th>telephone</th>
 							<th>role</th>
+							<th>Livraisons</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -85,9 +86,16 @@
 								<td>{{ utilisateur.id }}</td>
 
 								<td>{{ utilisateur.nom }}</td>
-								
+
 								<td>{{ utilisateur.telephone }}</td>
 								<td>{{ utilisateur.role }}</td>
+								<td>
+
+									<a href="#" class="action-icon green-icon">
+										<i class="fa-regular fa-eye"></i>
+									</a>
+
+								</td>
 
 							</tr>
 						{% endfor %}

@@ -12,5 +12,7 @@ interface UtilisateurRepositoryInterface
     public function countAll(): int;
     public function countByRole(string $role): int;
     public function findUtilisateurById(int $id):?Utilisateur;
+    public function save(Utilisateur $entity, bool $flush = false): void;
+
     // public function save(Utilisateur $utilisateur): void;
 }

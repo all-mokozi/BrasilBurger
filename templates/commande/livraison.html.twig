@@ -26,7 +26,7 @@
 					</div>
 					<div class="card-info">
 						<p>Recette du jour</p>
-						<h3>{{ recetteDuJour|number_format(0, ',', ' ') }} FCFA</h3>
+						<h3>1.004.500 FCFA</h3>
 					</div>
 				</div>
 				<div class="card card-yellow-border">
@@ -34,8 +34,8 @@
 						<i class="fa-regular fa-clock"></i>
 					</div>
 					<div class="card-info">
-						<p>Termine</p>
-						<h3>{{ commandesTerminees }}</h3>
+						<p>En Cours</p>
+						<h3>12</h3>
 					</div>
 				</div>
 				<div class="card card-green-light-border">
@@ -44,7 +44,7 @@
 					</div>
 					<div class="card-info">
 						<p>Validee</p>
-						<h3>{{ commandesValidees }}</h3>
+						<h3>45</h3>
 					</div>
 				</div>
 				<div class="card card-red-border">
@@ -52,40 +52,17 @@
 						<i class="fa-solid fa-xmark"></i>
 					</div>
 					<div class="card-info">
-						<p>Produit le plus vendu</p>
-						<h4>{{ produitPlusVenduDuJour ? produitPlusVenduDuJour.produitNom : 'Aucun' }}</h4>
+						<p>Annulee</p>
+						<h3>3</h3>
 					</div>
 				</div>
 			</div>
 
 			<section class="recent-orders">
-				<form method="get" action="{{ path('app_commande') }}" class="filter-form">
-					<div class="table-header-control">
-						<h3>Commandes Recentes</h3>
-
-						<div class="filter-box">
-							<select name="etat" onchange="this.form.submit()">
-								<option value="">Tous les états</option>
-								<option value="VALIDE" {{ filtres.etat == 'VALIDE' ? 'selected' }}>Validée</option>
-								<option value="TERMINE" {{ filtres.etat == 'TERMINE' ? 'selected' }}>Terminée</option>
-							</select>
-							<i class="fa-solid fa-chevron-down"></i>
-						</div>
-
-						<div class="filter-box">
-							<input type="date" name="date" value="{{ filtres.date }}" onchange="this.form.submit()">
-						</div>
-
-						<div class="filter-box">
-							<input type="text" name="client" placeholder="Rechercher client..." value="{{ filtres.client }}" onchange="this.form.submit()">
-						</div>
-
-						<a href="{{ path('app_commande') }}" class="reset-filter" title="Réinitialiser">
-							<i class="fa-solid fa-arrow-rotate-left"></i>
-						</a>
-					</div>
-					<input type="hidden" name="page" value="1">
-				</form>
+				<div class="table-header-control">
+					<h3>Livraisons Recentes</h3>
+					
+				</div>
 
 				<table class="styled-table">
 					<thead>
@@ -102,7 +79,6 @@
 					</thead>
 					<tbody>
 						{% for commande in commandes %}
-						{% if commande.etat != 'EN_COURS' %}
 							<tr>
 								{# <td>{{ commande.id }}</td> #}
 
@@ -125,13 +101,12 @@
 
 								</td>
 							</tr>
-							{% endif %}
 						{% endfor %}
 					</tbody>
 
 				</table>
 
-				{% include "components/pagination.html.twig" with {totalPages: totalPages, pageEnCours: pageEnCours, pathname: 'app_commande',params: filtres} %}
+				{% include "components/pagination.html.twig" with {totalPages: totalPages, pageEnCours: pageEnCours, pathname: 'app_livraison_list'} %}
 
 			</section>
 		</main>
