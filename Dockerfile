@@ -24,28 +24,31 @@ COPY . .
 # Définition de l'environnement en production
 ENV APP_ENV=prod
 
-# --- CORRECTIF : Variables fictives pour le build ---
-# Cela empêche Symfony de chercher une vraie base de données maintenant
+# Variables fictives pour le build
 ENV DATABASE_URL="postgresql://db_user:db_pass@127.0.0.1:5432/db_name?serverVersion=16&charset=utf8"
 ENV APP_SECRET=67d34c1ca291563f66810c9c45014878 
 
-# 1. Installation des dépendances PHP
+# Installation des dépendances PHP (sans scripts)
 RUN composer install --no-dev --optimize-autoloader --no-scripts
 
-# 2. Préparation des dossiers et droits (Très important avant le cache:clear)
-RUN mkdir -p var/cache var/log var/sessions \
-    && chown -R www-data:www-data var/ \
-    && chmod -R 777 var/
-
-# 3. Changement de la racine d'Apache
+# Configuration d'Apache pour pointer vers /public
 ENV APACHE_DOCUMENT_ROOT /var/www/html/public
 RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf
 RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf
 
-# 4. Vidage du cache (maintenant il ne devrait plus planter)
-RUN php bin/console cache:clear --env=prod
+# Création des dossiers nécessaires et gestion des droits
+RUN mkdir -p var/cache var/log var/sessions \
+    && chown -R www-data:www-data /var/www/html/var \
+    && chmod -R 777 /var/www/html/var
 
-# Nettoyage des droits final
-RUN chown -R www-data:www-data /var/www/html/var
+# Création du script de démarrage (Seulement le cache et Apache)
+RUN echo '#!/bin/sh\n\
+php bin/console cache:clear --env=prod\n\
+exec apache2-foreground' > /usr/local/bin/docker-entrypoint.sh
+
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 
 EXPOSE 80
+
+# On utilise le script pour démarrer
+ENTRYPOINT ["docker-entrypoint.sh"]
