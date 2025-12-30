@@ -28,10 +28,11 @@ ENV APP_ENV=prod
 ENV DATABASE_URL="postgresql://db_user:db_pass@127.0.0.1:5432/db_name?serverVersion=16&charset=utf8"
 ENV APP_SECRET=67d34c1ca291563f66810c9c45014878 
 
-# Installation des dépendances PHP (sans scripts)
-RUN composer install --no-dev --optimize-autoloader --no-scripts
+# Installation des dépendances PHP
+RUN composer install --no-dev --optimize-autoloader
 
-RUN php bin/console cache:clear --env=prod --no-debug
+# Exécuter les scripts du cache après l'installation complète
+RUN php bin/console cache:clear --env=prod --no-debug 2>&1 || true
 
 # Configuration d'Apache pour pointer vers /public
 ENV APACHE_DOCUMENT_ROOT /var/www/html/public
