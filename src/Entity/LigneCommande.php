@@ -2,7 +2,7 @@
 
 namespace App\Entity;
 
-use App\Repository\LigneCommandeRepository;
+use App\Repository\Impl\LigneCommandeRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
