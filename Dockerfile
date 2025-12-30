@@ -21,15 +21,15 @@ WORKDIR /var/www/html
 # Copie du projet
 COPY . .
 
-# Définition de l'environnement en production
-ENV APP_ENV=prod
-
-# Variables fictives pour le build
+# Variables fictives pour le build (avant l'installation)
 ENV DATABASE_URL="postgresql://db_user:db_pass@127.0.0.1:5432/db_name?serverVersion=16&charset=utf8"
 ENV APP_SECRET=67d34c1ca291563f66810c9c45014878 
 
 # Installation des dépendances PHP
 RUN composer install --no-dev --optimize-autoloader
+
+# Définition de l'environnement en production (APRÈS composer install)
+ENV APP_ENV=prod
 
 # Exécuter les scripts du cache après l'installation complète
 RUN php bin/console cache:clear --env=prod --no-debug 2>&1 || true
