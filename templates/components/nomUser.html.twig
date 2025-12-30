@@ -1,0 +1,9 @@
+{% if app.user %}
+					<div class="user-info">
+						<p>
+							<strong>{{ app.user.nom }}</strong>
+						</p>
+						<small>{{ app.user.role }}</small>
+
+					</div>
+				{% endif %}

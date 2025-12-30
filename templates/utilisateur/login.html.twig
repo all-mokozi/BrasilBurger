@@ -1,0 +1,207 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Connexion - Brasil Burger{% endblock %}
+
+{% block body %}
+<style>
+    :root {
+        --brasil-green: #006b3f;
+        --brasil-yellow: #ffd700;
+        --brasil-bg: #ebebeb;
+    }
+
+    .login-wrapper {
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: var(--brasil-bg);
+        background-image: radial-gradient(circle at 20% 30%, rgba(0, 107, 63, 0.05) 0%, transparent 50%),
+                          radial-gradient(circle at 80% 70%, rgba(255, 215, 0, 0.1) 0%, transparent 50%);
+    }
+
+    .login-card {
+        background: white;
+        padding: 3rem 2.5rem;
+        border-radius: 20px;
+        box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+        width: 100%;
+        max-width: 420px;
+        position: relative;
+        overflow: hidden;
+    }
+
+    /* Bande décorative en haut */
+    .login-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 6px;
+        background: linear-gradient(90deg, var(--brasil-green) 0%, var(--brasil-yellow) 100%);
+    }
+
+    .login-header {
+        text-align: center;
+        margin-bottom: 2.5rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    /* --- MODIFICATION ICI : Style du logo pour le rendre visible --- */
+    .login-header img {
+        width: 110px;  /* Taille totale du cercle */
+        height: 110px;
+        margin-bottom: 1rem;
+        background-color: var(--brasil-green); /* Fond vert */
+        border-radius: 50%; /* Forme circulaire */
+        padding: 22px; /* Espace autour de l'icône à l'intérieur du cercle */
+        box-shadow: 0 6px 15px rgba(0, 107, 63, 0.2); /* Ombre douce */
+    }
+    /* --------------------------------------------------------- */
+
+    .login-header h2 {
+        color: #000;
+        font-weight: 800;
+        font-size: 1.8rem;
+        margin-bottom: 0.2rem;
+        margin-top: 0.5rem;
+    }
+
+    .login-header p {
+        color: #666;
+        font-size: 0.9rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+
+    .form-group label {
+        display: block;
+        margin-bottom: 0.6rem;
+        color: #444;
+        font-weight: 600;
+        font-size: 0.9rem;
+    }
+
+    .input-wrapper {
+        position: relative;
+    }
+
+    .input-wrapper i {
+        position: absolute;
+        left: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--brasil-green);
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 12px 12px 12px 45px;
+        border: 2px solid #eee;
+        border-radius: 12px;
+        outline: none;
+        transition: all 0.3s;
+        font-size: 1rem;
+    }
+
+    .form-control:focus {
+        border-color: var(--brasil-green);
+        box-shadow: 0 0 0 4px rgba(0, 107, 63, 0.1);
+    }
+
+    .btn-login {
+        width: 100%;
+        padding: 14px;
+        background-color: var(--brasil-green);
+        color: var(--brasil-yellow);
+        border: none;
+        border-radius: 12px;
+        font-size: 1.1rem;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.3s;
+        margin-top: 1rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+    }
+
+    .btn-login:hover {
+        background-color: #005332;
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(0, 107, 63, 0.3);
+    }
+
+    .alert-error {
+        background-color: #ffeded;
+        color: #d63031;
+        padding: 12px;
+        border-radius: 10px;
+        margin-bottom: 1.5rem;
+        font-size: 0.85rem;
+        border-left: 4px solid #d63031;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+</style>
+
+<div class="login-wrapper">
+    <div class="login-card">
+        <div class="login-header">
+            <img src="{{ asset('img/hamburger-junk-food-white-icon-png-image-701751694972500plxqkzef6f-removebg-preview.png') }}" alt="Brasil Burger Logo">
+            <h2>Brasil<span style="color: var(--brasil-yellow);">Burger</span></h2>
+            <p> Administration</p>
+        </div>
+
+        {% if error %}
+            <div class="alert-error">
+                <i class="fa-solid fa-circle-exclamation"></i>
+                {{ error.messageKey|trans(error.messageData, 'security') }}
+            </div>
+        {% endif %}
+
+        {% for message in app.flashes('error') %}
+            <div class="alert-error">
+                <i class="fa-solid fa-circle-exclamation"></i>
+                {{ message|trans({}, 'security') }}
+            </div>
+        {% endfor %}
+
+        <form method="post">
+            <div class="form-group">
+                <label for="email">Identifiant Professionnel</label>
+                <div class="input-wrapper">
+                    <i class="fa-solid fa-envelope"></i>
+                    <input type="email" name="email" id="email" class="form-control" 
+                           value="{{ last_username }}" required autofocus placeholder="email@brasilburger.sn">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Mot de passe</label>
+                <div class="input-wrapper">
+                    <i class="fa-solid fa-lock"></i>
+                    <input type="password" name="password" id="password" class="form-control" 
+                           required placeholder="••••••••••••">
+                </div>
+            </div>
+
+            <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+            <button type="submit" class="btn-login">
+                <span>Se connecter</span>
+                <i class="fa-solid fa-arrow-right"></i>
+            </button>
+        </form>
+    </div>
+</div>
+{% endblock %}

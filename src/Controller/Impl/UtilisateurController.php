@@ -10,6 +10,7 @@ use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 final class UtilisateurController extends AbstractController
 {
@@ -74,4 +75,29 @@ public function createUtilisateurReq(Request $request): Response
         'formLivreur' => $form->createView(),
     ]);
 }
+
+#[Route('/admin/login', name: 'admin_login')]
+public function login(AuthenticationUtils $authenticationUtils): Response
+{
+
+    if ($this->getUser()) {
+            return $this->redirectToRoute('app_commande');
+        }
+    // Dans UtilisateurController::login
+$error = $authenticationUtils->getLastAuthenticationError();
+if ($error) {
+    // Cela affichera l'erreur réelle dans vos logs Symfony (et non juste "Authenticator failed")
+    $this->addFlash('error', $error->getMessageKey()); 
+}
+    return $this->render('utilisateur/login.html.twig', [
+        'last_username' => $authenticationUtils->getLastUsername(),
+        'error' => $authenticationUtils->getLastAuthenticationError(),
+    ]);
+}
+#[Route('/admin/logout', name: 'admin_logout')]
+public function logout(): void
+{
+    // Symfony intercepte cette route automatiquement
+}
+
 }

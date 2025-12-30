@@ -1,9 +1,8 @@
 <aside class="sidebar">
-			<div class="logo">
-				<i class="fa-solid fa-burger"></i>
-				<span>Brasil<span class="highlight">Burger</span>
-				</span>
-			</div>
+			 <div class="logo">
+                <img src="{{ asset('img/hamburger-junk-food-white-icon-png-image-701751694972500plxqkzef6f-removebg-preview.png') }}" alt="logo" style="width: 40px; height: 40px;"/>
+                <div class="nom"><span>Brasil</span><span style="color: #FFC30F;">Burger</span></div>
+            </div>
 
 			<nav>
 				<ul>
@@ -32,16 +31,19 @@
 							Livreurs
 						</a>
 					</li>
-					<li>
+					{# <li>
 						<a href="#">
 							<i class="fa-solid fa-users"></i>
 							Clients
 						</a>
-					</li>
+					</li> #}
 				</ul>
 			</nav>
 
 			<div class="logout-container">
-				<button class="btn-logout">Deconnexion</button>
-			</div>
+    <a href="{{ path('admin_logout') }}" class="btn-logout" style="text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 10px;">
+        <i class="fa-solid fa-right-from-bracket"></i>
+        <span>Déconnexion</span>
+    </a>
+</div>
 		</aside>
