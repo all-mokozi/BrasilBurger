@@ -15,4 +15,6 @@ interface CommandeRepositoryInterface
     public function countCommandesByEtat(string $etat): int;
     public function getProduitPlusVendu(): ?string;
     public function getProduitPlusVenduDuJour(): ?array;
+    public function getLivraisonsByLivreur(int $livreurId, array $criteria = [], array $orderBy = [], ?int $limit = null, ?int $offset = null): array;
+    public function assignerLivraisonALivreur(int $commandeId, int $livreurId): bool;
 }

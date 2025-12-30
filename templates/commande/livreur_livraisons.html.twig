@@ -1,0 +1,100 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Livraisons du livreur
+{% endblock %}
+
+{% block body %}
+<div class="container">
+    {% include 'components/barLaterale.html.twig' %}
+
+    <main class="main-content">
+        <header>
+            <h2>Livraisons du livreur #{{ livreurId }}</h2>
+            <div class="user-profile">
+                <i class="fa-regular fa-user"></i>
+            </div>
+        </header>
+
+        <section class="recent-orders">
+            <div class="table-header-control">
+                <h3>Livraisons assignées</h3>
+
+                <div class="filter-box">
+                    <select name="etat" onchange="this.form.submit()">
+                        <option value="">Tous les états</option>
+                        <option value="TERMINE" {{ filtres.etat == 'TERMINE' ? 'selected' }}>Terminée</option>
+                        <option value="LIVREE" {{ filtres.etat == 'LIVREE' ? 'selected' }}>Livrée</option>
+                    </select>
+                    <i class="fa-solid fa-chevron-down"></i>
+                </div>
+            </div>
+
+            <table class="styled-table">
+                <thead>
+                    <tr>
+                        <th>Client</th>
+                        <th>Produit</th>
+                        <th>Date</th>
+                        <th>Mode</th>
+                        <th>État</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for livraison in livraisons %}
+                        <tr>
+                            <td>{{ livraison.client.nom }}</td>
+                            <td>{{ livraison.produit.nom }}</td>
+                            <td>{{ livraison.dateCommande|date('d/m/Y') }}</td>
+                            <td>{% include 'components/afficherModeLivraison.html.twig' with {'modeLivraison': livraison.modeLivraison} %}</td>
+                            <td>{% include 'components/statut.html.twig' with {'etat': livraison.etat} %}</td>
+                            <td>
+                                <a href="{{ path('app_commande_show', { id: livraison.id, page: pageEnCours }) }}" class="action-icon green-icon">
+                                    <i class="fa-regular fa-eye"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            {% include "components/pagination.html.twig" with {totalPages: totalPages, pageEnCours: pageEnCours, pathname: 'app_livreur_livraisons', params: {'id': livreurId}|merge(filtres)} %}
+        </section>
+
+        <section class="recent-orders" style="margin-top: 40px;">
+            <h3>Assigner une nouvelle livraison</h3>
+
+            {% if commandesDisponibles %}
+                <table class="styled-table">
+                    <thead>
+                        <tr>
+                            <th>Client</th>
+                            <th>Produit</th>
+                            <th>Date</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for commande in commandesDisponibles %}
+                            <tr>
+                                <td>{{ commande.client.nom }}</td>
+                                <td>{{ commande.produit.nom }}</td>
+                                <td>{{ commande.dateCommande|date('d/m/Y') }}</td>
+                                <td>
+                                    <form method="post" action="{{ path('app_assigner_livraison_livreur', {commandeId: commande.id, livreurId: livreurId}) }}" style="display: inline;">
+                                        <button type="submit" class="action-icon blue-icon" title="Assigner cette livraison">
+                                            <i class="fa-solid fa-plus"></i>
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <p>Aucune livraison disponible à assigner.</p>
+            {% endif %}
+        </section>
+    </main>
+</div>
+{% endblock %}

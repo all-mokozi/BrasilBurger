@@ -126,4 +126,47 @@ final class CommandeController extends AbstractController
             'id' => $id
         ]);
     }
+
+    #[Route('/livreur/{id}/livraisons', name: 'app_livreur_livraisons', methods: ['GET'])]
+    public function livreurLivraisons(int $id, Request $request): Response
+    {
+        $page = $request->query->getInt('page', 1);
+        $etat = $request->query->get('etat');
+        $limit = $this->getParameter('LIMIT_PER_PAGE');
+        $offset = ($page - 1) * $limit;
+
+        $criteria = [];
+        if ($etat) {
+            $criteria['etat'] = $etat;
+        }
+
+        $livraisons = $this->commandeService->getLivraisonsByLivreur($id, $criteria, ['dateCommande' => 'DESC'], $limit, $offset);
+        $totalLivraisons = count($this->commandeService->getLivraisonsByLivreur($id, $criteria));
+        $totalPages = ceil($totalLivraisons / $limit);
+
+        $commandesDisponibles = $this->commandeService->list(['etat' => 'TERMINE', 'hasLivreur' => false, 'modeLivraison' => 'LIVRAISON'], ['dateCommande' => 'DESC'], 10);
+
+        return $this->render('commande/livreur_livraisons.html.twig', [
+            'livraisons' => $livraisons,
+            'livreurId' => $id,
+            'pageEnCours' => $page,
+            'totalPages' => $totalPages,
+            'filtres' => ['etat' => $etat],
+            'commandesDisponibles' => $commandesDisponibles
+        ]);
+    }
+
+    #[Route('/assigner-livraison/{commandeId}/livreur/{livreurId}', name: 'app_assigner_livraison_livreur', methods: ['POST'])]
+    public function assignerLivraisonALivreur(int $commandeId, int $livreurId): Response
+    {
+        $success = $this->commandeService->assignerLivraisonALivreur($commandeId, $livreurId);
+
+        if ($success) {
+            $this->addFlash('success', 'Livraison assignée avec succès au livreur.');
+        } else {
+            $this->addFlash('error', 'Impossible d\'assigner cette livraison.');
+        }
+
+        return $this->redirectToRoute('app_livreur_livraisons', ['id' => $livreurId]);
+    }
 }

@@ -42,7 +42,7 @@
 						{% if commande.modeLivraison == 'LIVRAISON' %}
 							<p style="margin: 5px 0;">
 								<strong>Livreur</strong>
-								{{ commande.adresseLivraison|default('Retrait comptoir') }}
+								{{ commande.livreur.nom|default('Non assigné') }}
 							</p>
 						{% endif %}
 
@@ -99,7 +99,6 @@
 									<strong>{{ commande.produit.nom }}</strong>
 								</div>
 							</td>
-							{# On calcule le prix unitaire si non stocké (Montant / Quantité) #}
 							<td>{{ (commande.montantTotal / commande.quantite)|number_format(0, '.', ' ') }}
 								FCFA</td>
 							<td style="text-align: center;">x

@@ -1,6 +1,9 @@
 <?php
+
 namespace App\Service;
+
 use App\Entity\Commande;
+
 interface CommandeServiceInterface
 {
     public function list(array $criteria = [], array $orderBy = [], ?int $limit = null, ?int $offset = null): array;
@@ -12,4 +15,6 @@ interface CommandeServiceInterface
     public function countCommandesByEtat(string $etat): int;
     public function getProduitPlusVendu(): ?string;
     public function getProduitPlusVenduDuJour(): ?array;
+    public function getLivraisonsByLivreur(int $livreurId, array $criteria = [], array $orderBy = [], ?int $limit = null, ?int $offset = null): array;
+    public function assignerLivraisonALivreur(int $commandeId, int $livreurId): bool;
 }

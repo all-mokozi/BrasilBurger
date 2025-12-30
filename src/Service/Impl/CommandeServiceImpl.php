@@ -59,5 +59,15 @@ class CommandeServiceImpl implements CommandeServiceInterface
     {
         return $this->commandeRepository->getProduitPlusVenduDuJour();
     }
+
+    public function getLivraisonsByLivreur(int $livreurId, array $criteria = [], array $orderBy = [], ?int $limit = null, ?int $offset = null): array
+    {
+        return $this->commandeRepository->getLivraisonsByLivreur($livreurId, $criteria, $orderBy, $limit, $offset);
+    }
+
+    public function assignerLivraisonALivreur(int $commandeId, int $livreurId): bool
+    {
+        return $this->commandeRepository->assignerLivraisonALivreur($commandeId, $livreurId);
+    }
     
 }

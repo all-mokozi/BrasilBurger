@@ -3,6 +3,7 @@
 namespace App\Repository\Impl;
 
 use App\Entity\Commande;
+use App\Entity\Utilisateur;
 use App\Repository\CommandeRepositoryInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -26,6 +27,12 @@ class CommandeRepositoryImpl extends ServiceEntityRepository implements Commande
                 $qb->andWhere('c.livreur IS NULL');
             }
             unset($criteria['hasLivreur']);
+        }
+
+        if (isset($criteria['modeLivraison'])) {
+            $qb->andWhere('c.modeLivraison = :modeLivraison')
+                ->setParameter('modeLivraison', $criteria['modeLivraison']);
+            unset($criteria['modeLivraison']);
         }
 
         if (isset($criteria['clientNom'])) {
@@ -88,6 +95,12 @@ class CommandeRepositoryImpl extends ServiceEntityRepository implements Commande
             unset($criteria['hasLivreur']); // 🔥 TRÈS IMPORTANT
         }
 
+        if (isset($criteria['modeLivraison'])) {
+            $qb->andWhere('c.modeLivraison = :modeLivraison')
+                ->setParameter('modeLivraison', $criteria['modeLivraison']);
+            unset($criteria['modeLivraison']);
+        }
+
         if (isset($criteria['clientNom'])) {
             $qb->join('c.client', 'client');
             $qb->andWhere('LOWER(client.nom) LIKE LOWER(:clientNom)')
@@ -122,6 +135,50 @@ class CommandeRepositoryImpl extends ServiceEntityRepository implements Commande
 
 
         $this->getEntityManager()->flush();
+    }
+
+    public function getLivraisonsByLivreur(int $livreurId, array $criteria = [], array $orderBy = [], ?int $limit = null, ?int $offset = null): array
+    {
+        $qb = $this->createQueryBuilder('c')
+            ->join('c.livreur', 'l')
+            ->where('l.id = :livreurId')
+            ->setParameter('livreurId', $livreurId);
+
+        if (isset($criteria['etat'])) {
+            $qb->andWhere('c.etat = :etat')
+                ->setParameter('etat', $criteria['etat']);
+        }
+
+        foreach ($orderBy as $field => $direction) {
+            $qb->addOrderBy("c.$field", $direction);
+        }
+
+        if ($limit !== null) {
+            $qb->setMaxResults($limit);
+        }
+
+        if ($offset !== null) {
+            $qb->setFirstResult($offset);
+        }
+
+        return $qb->getQuery()->getResult();
+    }
+
+    public function assignerLivraisonALivreur(int $commandeId, int $livreurId): bool
+    {
+        $commande = $this->find($commandeId);
+        if (!$commande || $commande->getEtat() !== 'TERMINE' || $commande->getModeLivraison() !== 'LIVRAISON' || $commande->getLivreur() !== null) {
+            return false;
+        }
+
+        $livreur = $this->getEntityManager()->getRepository(Utilisateur::class)->find($livreurId);
+        if (!$livreur) {
+            return false;
+        }
+
+        $commande->setLivreur($livreur);
+        $this->save($commande);
+        return true;
     }
 
     public function getRecetteDuJour(): float
