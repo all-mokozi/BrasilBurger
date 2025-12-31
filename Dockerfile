@@ -28,8 +28,8 @@ RUN composer install --optimize-autoloader
 # Définition de l'environnement en production
 ENV APP_ENV=prod
 
-# Exécuter les scripts du cache après l'installation complète
-RUN php bin/console cache:clear --env=prod --no-debug
+# Exécuter les scripts du cache après l'installation complète (tolère les erreurs)
+RUN php bin/console cache:clear --env=prod --no-debug || true
 
 # Stage 2 : Production - copie seulement ce qu'il faut
 FROM php:8.4-apache
