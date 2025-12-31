@@ -50,6 +50,10 @@ WORKDIR /var/www/html
 # Copie du projet depuis le builder
 COPY --from=builder /var/www/html .
 
+# Assurer que .htaccess est présent et lisible
+RUN ls -la /var/www/html/public/ && \
+    chmod 644 /var/www/html/public/.htaccess || true
+
 # Définition de l'environnement en production
 ENV APP_ENV=prod
 
