@@ -37,6 +37,7 @@ FROM php:8.4-apache
 # Installation des dépendances système et des extensions PHP
 RUN apt-get update && apt-get install -y \
     libpq-dev \
+    libicu-dev \
     && docker-php-ext-install pdo pdo_pgsql intl \
     && rm -rf /var/lib/apt/lists/*
 
