@@ -50,6 +50,16 @@ WORKDIR /var/www/html
 # Copie du projet depuis le builder
 COPY --from=builder --chown=www-data:www-data /var/www/html .
 
+# Supprimer le dossier var qui vient du builder et le recréer avec les bonnes permissions
+RUN rm -rf /var/www/html/var && \
+    mkdir -p \
+    var/cache/prod/asset_mapper \
+    var/cache/prod/pools \
+    var/log \
+    var/sessions && \
+    chown -R www-data:www-data /var/www/html/var && \
+    chmod -R 777 /var/www/html/var
+
 # Assurer que .htaccess est présent et lisible
 RUN ls -la /var/www/html/public/ && \
     chmod 644 /var/www/html/public/.htaccess || true
@@ -61,16 +71,6 @@ ENV APP_ENV=prod
 ENV APACHE_DOCUMENT_ROOT /var/www/html/public
 RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf
 RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf
-
-# Création des dossiers nécessaires avec toute la structure et gestion des droits
-RUN mkdir -p \
-    var/cache/prod/asset_mapper \
-    var/cache/prod/pools \
-    var/log \
-    var/sessions && \
-    chown -R www-data:www-data /var/www/html/var && \
-    chmod -R 755 /var/www/html/var && \
-    chmod -R 775 /var/www/html/var/cache /var/www/html/var/log /var/www/html/var/sessions
 
 # Création du script de démarrage (Seulement le cache et Apache)
 RUN echo '#!/bin/sh\n\
