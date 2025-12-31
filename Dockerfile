@@ -48,7 +48,7 @@ RUN a2enmod rewrite
 WORKDIR /var/www/html
 
 # Copie du projet depuis le builder
-COPY --from=builder /var/www/html .
+COPY --from=builder --chown=www-data:www-data /var/www/html .
 
 # Assurer que .htaccess est présent et lisible
 RUN ls -la /var/www/html/public/ && \
@@ -63,9 +63,9 @@ RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-av
 RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf
 
 # Création des dossiers nécessaires et gestion des droits
-RUN mkdir -p var/cache var/log var/sessions \
-    && chown -R www-data:www-data /var/www/html/var \
-    && chmod -R 777 /var/www/html/var
+RUN mkdir -p var/cache var/log var/sessions && \
+    chown -R www-data:www-data /var/www/html/var && \
+    chmod -R 775 /var/www/html/var
 
 # Création du script de démarrage (Seulement le cache et Apache)
 RUN echo '#!/bin/sh\n\
