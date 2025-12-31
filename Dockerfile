@@ -19,7 +19,7 @@ WORKDIR /var/www/html
 COPY . .
 
 # Variables fictives pour le build
-ENV DATABASE_URL="postgresql://db_user:db_pass@127.0.0.1:5432/db_name?serverVersion=16&charset=utf8&sslmode=require"
+ENV DATABASE_URL="postgresql://db_user:db_pass@127.0.0.1:5432/db_name?serverVersion=16&charset=utf8"
 ENV APP_SECRET=67d34c1ca291563f66810c9c45014878
 
 # Installation de TOUTES les dépendances (y compris dev) pour que DebugBundle soit disponible
